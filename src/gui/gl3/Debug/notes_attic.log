@@ -1,0 +1,17 @@
+﻿  main.cpp
+c:\dev\projects\notes_attic\src\gui\include\dirent.h(896): warning C4127: conditional expression is constant
+c:\dev\projects\notes_attic\src\gui\stb_image.h(956): warning C4100: 'bpc' : unreferenced formal parameter
+c:\dev\projects\notes_attic\src\gui\main.cpp(90): warning C4129: 'P' : unrecognized character escape sequence
+c:\dev\projects\notes_attic\src\gui\main.cpp(90): warning C4129: 'A' : unrecognized character escape sequence
+c:\dev\projects\notes_attic\src\gui\main.cpp(90): warning C4129: 'R' : unrecognized character escape sequence
+c:\dev\projects\notes_attic\src\gui\main.cpp(240): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+c:\dev\projects\notes_attic\src\gui\main.cpp(351): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+c:\dev\projects\notes_attic\src\gui\main.cpp(367): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+c:\dev\projects\notes_attic\src\gui\main.cpp(455): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+c:\dev\projects\notes_attic\src\gui\main.cpp(1147): warning C4129: '%' : unrecognized character escape sequence
+c:\dev\projects\notes_attic\src\gui\include\dirent.h(286): warning C4505: '_wreaddir' : unreferenced local function has been removed
+c:\dev\projects\notes_attic\src\gui\include\dirent.h(296): warning C4505: 'rewinddir' : unreferenced local function has been removed
+c:\dev\projects\notes_attic\src\gui\include\dirent.h(299): warning C4505: 'scandir' : unreferenced local function has been removed
+c:\dev\projects\notes_attic\src\gui\include\dirent.h(305): warning C4505: 'versionsort' : unreferenced local function has been removed
+c:\dev\projects\notes_attic\src\gui\stb_image.h(643): warning C4505: 'stbi__sse2_available' : unreferenced local function has been removed
+  notes_attic.vcxproj -> C:\dev\projects\notes_attic\src\gui\Debug\notes_attic.exe

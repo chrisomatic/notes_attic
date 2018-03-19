@@ -1,0 +1,16 @@
+C:\dev\projects\notes_attic\src\exportnotes\bin\Release\exportnotes.exe.config
+C:\dev\projects\notes_attic\src\exportnotes\obj\Release\Interop.Domino.dll
+C:\dev\projects\notes_attic\src\exportnotes\obj\Release\exportnotes.csproj.ResolveComReference.cache
+C:\dev\projects\notes_attic\src\exportnotes\bin\Release\exportnotes.exe
+C:\dev\projects\notes_attic\src\exportnotes\bin\Release\exportnotes.pdb
+C:\dev\projects\notes_attic\src\exportnotes\bin\Release\Interop.Domino.dll
+C:\dev\projects\notes_attic\src\exportnotes\obj\Release\exportnotes.exe
+C:\dev\projects\notes_attic\src\exportnotes\obj\Release\exportnotes.pdb
+C:\dev\svn\notes_attic\src\exportnotes\bin\Release\exportnotes.exe.config
+C:\dev\svn\notes_attic\src\exportnotes\obj\Release\Interop.Domino.dll
+C:\dev\svn\notes_attic\src\exportnotes\obj\Release\exportnotes.csproj.ResolveComReference.cache
+C:\dev\svn\notes_attic\src\exportnotes\obj\Release\exportnotes.exe
+C:\dev\svn\notes_attic\src\exportnotes\obj\Release\exportnotes.pdb
+C:\dev\svn\notes_attic\src\exportnotes\bin\Release\exportnotes.exe
+C:\dev\svn\notes_attic\src\exportnotes\bin\Release\exportnotes.pdb
+C:\dev\svn\notes_attic\src\exportnotes\bin\Release\Interop.Domino.dll

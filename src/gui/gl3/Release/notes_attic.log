@@ -1,0 +1,26 @@
+﻿  main.cpp
+C:\dev\svn\notes_attic\include\stb\stb_image.h(956): warning C4100: 'bpc': unreferenced formal parameter
+main.cpp(89): warning C4129: 'P': unrecognized character escape sequence
+main.cpp(89): warning C4129: 'A': unrecognized character escape sequence
+main.cpp(89): warning C4129: 'R': unrecognized character escape sequence
+main.cpp(248): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+main.cpp(379): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+main.cpp(395): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+main.cpp(506): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+main.cpp(1325): warning C4129: '%': unrecognized character escape sequence
+C:\dev\svn\notes_attic\include\dirent.h(458): warning C4505: '_wreaddir': unreferenced local function has been removed
+C:\dev\svn\notes_attic\include\dirent.h(864): warning C4505: 'rewinddir': unreferenced local function has been removed
+C:\dev\svn\notes_attic\include\dirent.h(875): warning C4505: 'scandir': unreferenced local function has been removed
+C:\dev\svn\notes_attic\include\dirent.h(1021): warning C4505: 'versionsort': unreferenced local function has been removed
+C:\dev\svn\notes_attic\include\stb\stb_image.h(643): warning C4505: 'stbi__sse2_available': unreferenced local function has been removed
+  Generating code
+  1 of 1042 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+glfw3.lib(context.c.obj) : warning LNK4049: locally defined symbol _sscanf imported
+glfw3.lib(init.c.obj) : warning LNK4049: locally defined symbol _vsnprintf imported
+MSVCRT.lib(vsnprintf.obj) : warning LNK4049: locally defined symbol _vsnprintf imported
+MSVCRT.lib(vsnprintf.obj) : warning LNK4049: locally defined symbol __vsnprintf imported
+  notes_attic.vcxproj -> C:\dev\svn\notes_attic\src\gui\gl3\Release\notes_attic.exe
+  notes_attic.vcxproj -> C:\dev\svn\notes_attic\src\gui\gl3\Release\notes_attic.pdb (Full PDB)

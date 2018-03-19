@@ -1,0 +1,43 @@
+DONE:
+
+1.3
++ Added child region for attachments section so it scales
++ Keep a list of unique attachments per export, and amend duplicate names so they get stored too
++ Fix date sorting with 12:xx PM and 0x:xx PM (Maybe convert to military time?)
++ Add "Open with Default Program" checkbox to all data types
++ Reduce CPU usage when app is minimized
++ Add context menu to open individual email file or copy path to file
++ Remove CN= /O=ONLI from names on display
++ Add "Open Emails Folder"
++ Add up/down, pgup/pgdn, home/end to navigate email list
+
+1.2
++ Improved Font Rendering
++ Switched to DirectX11 Rendering Pipelines
++ Switched config directory to C:\users\<user>\AppData\Local\Attic\
++ Curated Font Selection
++ Added Feature: Delete Email
++ Made Settings Window a modal
++ Email files now have a .txt extension
++ Header fields now wrap if they don't fit on a single line
++ Clipped rendering for email list to help stop CPU waste
++ Change "Export Emails" to "Export emails from Lotus Notes"
+
+1.1
++ Fix memory leak on "Refresh Emails"
++ Fix sorting on Date field issue
++ Add Combo for sort direction
++ Add Theme stuff
++ Fix bug with loading config
++ Make filters case-insensitive
++ Make Settings window toggleable
+
+1.0
++ Make body searchable
++ Move sorting to better place
++ Implement sorting
++ Add attachments
++ Make attachments interactable
++ Add email indices to top of email files that are exported
++ Make export tool prevent email duplication by default
++ Integrate export tool into Attic GUI
