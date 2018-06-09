@@ -8,6 +8,7 @@
 
 #include <imgui\imgui.h>
 #include "imgui_impl_dx11.h"
+#include "resource.h"
 
 // DirectX
 #include <d3d11.h>
@@ -253,6 +254,7 @@ IMGUI_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wPa
     ImGuiIO& io = ImGui::GetIO();
     switch (msg)
     {
+	
     case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
     case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
     case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
@@ -304,6 +306,8 @@ IMGUI_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wPa
         if (wParam > 0 && wParam < 0x10000)
             io.AddInputCharacter((unsigned short)wParam);
         return 0;
+	
+
     }
     return 0;
 }

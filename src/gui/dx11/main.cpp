@@ -2,22 +2,27 @@
 #pragma comment(linker, "/HEAP:2000000")
 
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 4
+#define VERSION_MINOR 5
 
 #define MAX_EMAILS 1000000
 #define FIELD_KEY_MAX 100
 #define FIELD_VAL_MAX 10000
 #define FIELD_BODY_MAX 100000
+#define BIN_LENGTH 32
 
 #include <imgui\imgui.h>
 #include <imgui\imgui_freetype.h>
 #include <Shlobj.h>
 #include "imgui_impl_dx11.h"
+#include <shellapi.h>
 #include <d3d11.h>
 #define DIRECTINPUT_VERSION 0x0800
+#include <Strsafe.h>
 #include <dinput.h>
 #include <tchar.h>
 #include <dirent.h>
+#include <time.h>
+#include <thread>
 #include "process.h"
 #include "resource.h"
 
@@ -64,6 +69,13 @@ static char filter_body[FIELD_VAL_MAX] = {0};
 
 static bool only_attachments = false;
 static bool orient_right = false;
+static bool is_automatic_downloading_enabled = false;
+static const char* dow_items[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+static int  automatic_downloading_freq = 1;
+static int  automatic_downloading_pref_day = 1;
+static int  automatic_downloading_pref_dow = 0;
+static int  automatic_downloading_pref_hour = 8;
+static int  automatic_downloading_pref_min = 0;
 
 static char xls_program_path[MAX_PATH]  = {0};
 static char doc_program_path[MAX_PATH]  = {0};
@@ -84,12 +96,21 @@ static bool misc_override = true;
 
 static char root_dir[MAX_PATH] = {0};
 static bool show_settings_window = false;
-static bool set_scroll_here = false;
+static bool set_scroll_here  = false;
+static bool cache_is_updated = false;
 
+static char notes_password[100] = {0};
 static char config_path[MAX_PATH];
+static char* download_datetime;
+
+static HMENU hmenu;
+static GUID guid;
+
+static MSG msg;
 
 static int selected_email_index = -1;
 static int prev_selected_email_index = -1;
+static int pass_flags;
 static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 
 // Data
@@ -168,6 +189,54 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     switch (msg)
     {
+	case WM_CREATE:
+		ShowWindow(hWnd, SW_HIDE);
+		hmenu = CreatePopupMenu();
+		AppendMenu(hmenu, MF_STRING, ID_TRAY_SHOW, TEXT("Show UI"));
+		AppendMenu(hmenu, MF_STRING, ID_TRAY_EXIT, TEXT("Quit"));
+
+		break;
+	case WM_CLOSE:
+		ShowWindow(hWnd, SW_HIDE);
+		return 0;
+	case WM_SYSICON:
+	{
+		switch (wParam)
+		{
+		case ID_TRAY_APP_ICON:
+			SetForegroundWindow(hWnd);
+			break;
+		}
+		if (lParam == WM_LBUTTONUP)
+			ShowWindow(hWnd, SW_SHOW);
+		else if (lParam == WM_RBUTTONDOWN)
+		{
+			POINT curPoint;
+			GetCursorPos(&curPoint);
+			SetForegroundWindow(hWnd);
+
+			UINT clicked = TrackPopupMenu(hmenu, TPM_RETURNCMD | TPM_NONOTIFY, curPoint.x, curPoint.y, 0, hWnd, NULL);
+			SendMessage(hWnd, WM_NULL, 0, 0); // send benign message to window to make sure the menu goes away.
+
+            if (clicked == ID_TRAY_SHOW)
+            {
+                ShowWindow(hWnd, SW_SHOW);
+            }
+			else if (clicked == ID_TRAY_EXIT)
+			{
+				NOTIFYICONDATA nid = { 0 };
+
+				nid.cbSize = sizeof(NOTIFYICONDATA);
+				nid.uFlags = NIF_GUID;
+				nid.guidItem = guid;
+
+				Shell_NotifyIcon(NIM_DELETE, &nid);
+
+				PostQuitMessage(0);
+			}
+		}
+	}
+	break;
     case WM_SIZE:
 
         if (g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
@@ -207,7 +276,10 @@ static const char* default_misc_path = "C:\\Windows\\system32\\notepad.exe";
 static const char* default_export_program_path = "exportnotes.exe";
 
 static char cache_file_path[MAX_PATH];
+static char cache_file_path_temp[MAX_PATH];
+static char cache_file_path_del[MAX_PATH];
 static char config_file_path[MAX_PATH];
+static char bin_file_path[MAX_PATH];
 
 typedef struct
 {
@@ -231,9 +303,13 @@ static NotesEmail emails[MAX_EMAILS];
 static NotesEmail curr_email;
 
 static void parse_email(const char* file_path,int index);
+static void get_emails_direct(const char* directory_path,FILE* fp, int* temp_num_emails);
+static void write_direct_to_cache(const char* directory_path);
 static void get_emails(const char* directory_path);
 static void delete_email(int index);
-static void export_emails();
+static void export_emails(bool show, bool wait);
+static void export_emails_with_pass(bool show,bool wait, const char* pass);
+static void download_emails_and_refresh();
 static void display_main_menu();
 static void apply_filters();
 static void apply_sorting();
@@ -243,6 +319,8 @@ static void store_cache();
 static bool load_cache();
 static void load_config();
 static void store_config();
+static void load_pass();
+static void store_pass();
 static void clear_email_memory();
 static bool str_contains(char* base, char* search_pattern,bool case_sensitive);
 static int str_replace(char* base, char* search_pattern, char* replacement, char* ret_string);
@@ -257,8 +335,13 @@ static void load_style_ecstacy();
 static void load_style_minimal();
 static void draw_filters_email_list(int x);
 static void draw_header_body_attachments(int x);
+static char* get_current_datetime(struct tm &tstruct);
+static void get_next_download_datetime(char* download_datetime);
+static bool time_to_download();
 static bool directory_exists(const char* szPath);
 static bool file_exists(const char* file);
+static char* encrypt_password(char* password);
+static char* decrypt_password(char* encrypted_password);
 
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int nshowcmd)
 //int main(int, char**)
@@ -275,12 +358,23 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	strcpy(cache_file_path, config_path);
 	strcat(cache_file_path, "attic.data");
 
+	strcpy(cache_file_path_temp, config_path);
+	strcat(cache_file_path_temp, "attic_temp.data");
+
+	strcpy(cache_file_path_del, config_path);
+	strcat(cache_file_path_del, "attic_del.data");
+
 	strcpy(config_file_path, config_path);
 	strcat(config_file_path, "attic.cfg");
+
+	strcpy(bin_file_path, config_path);
+	strcat(bin_file_path, "attic.bin");
 
 	window_width = 1280;
 	window_height = 800;
     
+	HRESULT hCreateGuid = CoCreateGuid(&guid);
+
     // Create application window
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, LoadCursor(NULL, IDC_ARROW), NULL, NULL, _T("Notes Attic"), NULL };
 	wc.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
@@ -296,6 +390,24 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
         UnregisterClass(_T("Notes Attic"), wc.hInstance);
         return 1;
     }
+    
+    // try to init system tray icon
+    NOTIFYICONDATA nid = {0};
+
+	nid.cbSize = sizeof(NOTIFYICONDATA);
+	nid.hWnd = hwnd;
+	nid.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_SHOWTIP | NIF_GUID;
+	nid.guidItem = guid;
+	nid.uCallbackMessage = WM_SYSICON; //Set up our invented Windows Message 
+	nid.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE(IDI_ICON1));
+	WCHAR* message = TEXT("Notes Attic\nCompanion App for IBM Notes");
+	StringCchCopyW(nid.szTip, 50, message);
+	nid.uVersion = NOTIFYICON_VERSION_4;
+	Shell_NotifyIcon(NIM_ADD, &nid);
+
+	bool success = Shell_NotifyIcon(NIM_SETVERSION, &nid); 
+	if (!success)
+		printf("Error adding icon!");
 
     // Show the window
     ShowWindow(hwnd, SW_SHOWDEFAULT);
@@ -342,6 +454,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
     strcpy(export_program_path,default_export_program_path);
 
     load_config();
+    load_pass();
 
 	// Setup style
 	io.FontDefault = io.Fonts->Fonts[selected_font_index];
@@ -362,15 +475,21 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 
     // try to load cache file
     if(!load_cache())
-        load_emails();
+        write_direct_to_cache(root_dir);
 
     apply_filters();
     apply_sorting();
 
     ImVec4 clear_color = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
 
+    // set initial download_datetime
+    download_datetime = (char*)calloc(20, sizeof(char));
+    get_next_download_datetime(download_datetime);
+
+	// start thread the checks for downloading.
+	std::thread t1(download_emails_and_refresh);
+
     // Main loop
-    MSG msg;
     ZeroMemory(&msg, sizeof(msg));
     while (msg.message != WM_QUIT)
     {
@@ -388,11 +507,25 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 			continue;
 		}	
 
+        if(cache_is_updated)
+        {
+            cache_is_updated = false;
+            
+            clear_email_memory();
+            num_emails = 0;
+
+            load_cache();
+
+            filtered_indicies = (int*)malloc(num_emails*sizeof(int));
+            sorted_indicies   = (int*)malloc(num_emails*sizeof(int));
+
+            apply_filters();
+            apply_sorting();
+        }
 
         ImGui_ImplDX11_NewFrame();
 
 		display_main_menu();
-		
 
         // load email if needed
 		if (selected_email_index > -1)
@@ -491,6 +624,9 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
     }
 
     store_config();
+    store_pass();
+
+	t1.join();
 
     ImGui_ImplDX11_Shutdown();
     CleanupDeviceD3D();
@@ -505,7 +641,7 @@ static void draw_filters_email_list(int x)
     ImGui::SetNextWindowPos(ImVec2(x, 22), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(emails_window_width, window_height - 22), ImGuiCond_Always);
 
-    char email_title[20] = {0};
+    char email_title[32] = {0};
     sprintf(email_title,"Emails [%d/%d]",num_emails_filtered,num_emails);
 
     ImGui::Begin(email_title, 0,window_flags);
@@ -582,7 +718,6 @@ static void draw_filters_email_list(int x)
 				apply_filters();
 				apply_sorting();
 			}
-
 		}
 
         set_scroll_here = false;
@@ -1052,6 +1187,327 @@ static char* dt_convert_to_sortable_format(const char* date)
     return sortable_date;
 }
 
+static void get_emails_direct(const char* directory_path,FILE* cache_fp,int* temp_num_emails)
+{
+    DIR *dir;
+    struct dirent *dp;
+
+    dir = opendir(directory_path);
+
+    if(dir == NULL)
+        return;
+
+    for(;;)
+    {
+        dp = readdir(dir);
+
+        if(dp == NULL)
+            break;
+
+		if (strcmp(dp->d_name,".") == 0 || strcmp(dp->d_name,"..") == 0)
+			continue;
+
+        char full_path[MAX_PATH] = {0};
+        strcpy(full_path,directory_path);
+        strcat(full_path,"\\");
+        strcat(full_path,dp->d_name);
+
+        if(str_startswith(dp->d_name,"email_"))
+        {
+            fprintf(cache_fp, "%d;%s", strlen(full_path), full_path); // file_path
+
+            // try to open file and read in contents
+            FILE* fp = fopen(full_path, "r");
+
+            if (fp == NULL)
+                continue;
+
+            char key[FIELD_KEY_MAX] = { 0 };
+            char val[FIELD_VAL_MAX] = { 0 };
+
+            int key_count = 0;
+            int val_count = 0;
+            char c = '0';
+
+            int num_attachments = 0;
+
+            bool on_key = true;
+            bool val_start = false;
+			int  attachment_count = 0;
+
+            char*  body = NULL;
+            char*  to = NULL;
+            char*  to_formatted = NULL;
+            char*  cc = NULL;
+            char*  from = NULL;
+            char*  from_formatted = NULL;
+            char*  forwarded = NULL;
+            char*  date = NULL;
+            char*  date_formatted = NULL;
+            char*  subject = NULL;
+            char** attachments = NULL;
+            char** attachments_ext = NULL;
+
+            while (c != EOF)
+            {
+                if (val_count >= FIELD_VAL_MAX -1)
+                    val_count = FIELD_VAL_MAX -1;
+
+                if (key_count >= FIELD_KEY_MAX -1)
+                    key_count = FIELD_KEY_MAX -1;
+
+                c = (char)fgetc(fp);
+
+                if (val_start)
+                {
+                    // read past initial whitespace
+                    while (c != EOF && (c == '\t' || c == ' '))
+                        c = (char)fgetc(fp);
+
+                    val_start = false;
+                }
+
+                switch (c)
+                {
+                case ':':
+                {
+                    if (on_key)
+                    {
+                        val_count = 0;
+                        memset(val, 0, FIELD_VAL_MAX);
+                        on_key = false;
+                        val_start = true;
+                    }
+                    else
+                    {
+                        val[val_count++] = c;
+                    }
+                } break;
+
+                case '\r':
+                case '\n':
+                {
+                    if (strcmp(key, "Body") == 0)
+                    {
+                        do
+                        {
+                            c = (char)fgetc(fp);
+                        } while (c != EOF && (c == '\n' || c == '\t' || c == '\r' || c == ' '));
+
+                        //char body[1000000] = { 0 };
+                        char* temp_body = (char*)calloc(1000000, sizeof(char));
+
+                        temp_body[0] = c;
+                        int body_length = 1;
+
+                        for (;;)
+                        {
+                            c = (char)fgetc(fp);
+
+                            if (c == EOF)
+                                break;
+
+                            temp_body[body_length++] = c;
+
+                            if(body_length == 1000000)
+                                break;
+                        }
+
+                        // copy body to email body
+                        body = (char*)calloc(body_length+1,sizeof(char));
+                        strncpy(body, temp_body,body_length);
+
+                        free(temp_body);
+                    }
+                    else
+                    {
+                        int val_length = strlen(val);
+
+                        if (strcmp(key, "To") == 0)
+                        {
+                            to = (char*)calloc(val_length+1,sizeof(char));
+                            strncpy(to,val,val_length);
+                        }
+                        else if (strcmp(key, "CC") == 0)
+                        {
+                            cc = (char*)calloc(val_length+1,sizeof(char));
+                            strncpy(cc, val,val_length);
+                        }
+                        else if (strcmp(key, "From") == 0)
+                        {
+                            from = (char*)calloc(val_length+1,sizeof(char));
+                            strncpy(from, val,val_length);
+                        }
+                        else if (strcmp(key, "Forwarded From") == 0)
+                        {
+                            forwarded = (char*)calloc(val_length+1,sizeof(char));
+                            strncpy(forwarded, val,val_length);
+                        }
+                        else if (strcmp(key, "Date") == 0)
+                        {
+                            date = (char*)calloc(val_length+1,sizeof(char));
+                            strncpy(date, val,val_length);
+                        }
+                        else if (strcmp(key, "Subject") == 0)
+                        {
+                            subject = (char*)calloc(val_length+1,sizeof(char));
+                            strncpy(subject, val,val_length);
+                        }
+                        else if (strcmp(key, "Attachment_Count") == 0)
+                        {
+                            attachment_count = atoi(val);
+                            attachments     = (char**)calloc(attachment_count, sizeof(char*));
+                            attachments_ext = (char**)calloc(attachment_count, sizeof(char*));
+                        }
+                        else if (str_startswith(key,"Attachment_"))
+                        {
+                            int len = strlen(val);
+                            attachments[num_attachments] = (char*)calloc(len+1,sizeof(char));
+                            strncpy(attachments[num_attachments],val,len);
+                            attachments_ext[num_attachments] = str_getext(val);
+
+                            ++num_attachments;
+                        }
+
+                        key_count = 0;
+                        on_key = true;
+                        memset(key, 0, FIELD_KEY_MAX);
+
+                    }
+                } break;
+                default:
+                {
+                    if (on_key)
+                        key[key_count++] = c;
+                    else
+                        val[val_count++] = c;
+                } break;
+                }
+
+            }
+
+            fclose(fp);
+            
+            // post-process fields
+            // store sortable date
+            date_formatted = dt_convert_to_sortable_format(date);
+
+            // store formatted to
+            int to_length = strlen(to);
+            char* to_temp = (char*)calloc(to_length+1, sizeof(char));
+
+            int latest_length = str_replace(to,"CN=","",to_temp);
+
+            to_formatted = (char*)calloc(latest_length+1, sizeof(char));
+            str_replace(to_temp,"/O=ONLI@ONLI","",to_formatted);
+
+            free(to_temp);
+
+            // store formatted from
+            int from_length = strlen(from);
+            char* from_temp = (char*)calloc(from_length + 1, sizeof(char));
+
+            int latest_length_from = str_replace(from, "CN=", "", from_temp);
+
+            from_formatted = (char*)calloc(latest_length_from + 1, sizeof(char));
+            str_replace(from_temp, "/O=ONLI", "", from_formatted);
+
+            free(from_temp);
+
+            // write other email fields to cache
+            fprintf(cache_fp, "%d;%s", strlen(to), to);
+            fprintf(cache_fp, "%d;%s", strlen(to_formatted), to_formatted);
+            fprintf(cache_fp, "%d;%s", strlen(cc), cc);
+            fprintf(cache_fp, "%d;%s", strlen(from), from);
+            fprintf(cache_fp, "%d;%s", strlen(from_formatted), from_formatted);
+            fprintf(cache_fp, "%d;%s", strlen(forwarded), forwarded);
+            fprintf(cache_fp, "%d;%s", strlen(date), date);
+            fprintf(cache_fp, "%d;%s", strlen(date_formatted), date_formatted);
+            fprintf(cache_fp, "%d;%s", strlen(subject), subject);
+            fprintf(cache_fp, "%d;", attachment_count);
+
+            for(int j = 0; j < attachment_count; ++j)
+            {
+                fprintf(cache_fp, "%d;%s", strlen(attachments[j]), attachments[j]);
+                fprintf(cache_fp, "%d;%s", strlen(attachments_ext[j]), attachments_ext[j]);
+            }
+
+            fprintf(cache_fp, "%d;%s", strlen(body), body);
+
+			if (to != NULL) free(to);
+			if (to_formatted != NULL) free(to_formatted);
+			if (cc != NULL) free(cc);
+			if (from != NULL) free(from);
+			if (from_formatted != NULL) free(from_formatted);
+			if (forwarded != NULL) free(forwarded);
+			if (date != NULL) free(date);
+			if (date_formatted != NULL) free(date_formatted);
+			if (subject != NULL) free(subject);
+			if (body != NULL) free(body);
+
+            for(int j = 0; j < attachment_count; ++j)
+            {
+                if (attachments[j] != NULL) free(attachments[j]);
+                if (attachments_ext[j] != NULL) free(attachments_ext[j]);
+            }
+
+			if (attachments != NULL) free(attachments);
+			if (attachments_ext != NULL) free(attachments_ext);
+
+            attachment_count = 0;
+
+			++(*temp_num_emails);
+        }
+
+        get_emails_direct(full_path,cache_fp,temp_num_emails);
+
+        Sleep(1);
+    }
+
+    closedir(dir);
+}
+
+static void write_direct_to_cache(const char* directory_path)
+{
+    FILE *cache_fp = fopen(cache_file_path_temp,"wb");
+
+    if(cache_fp == NULL)
+        return;
+
+    // write space at beginning for number of emails
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(' ',cache_fp);
+    fputc(';' ,cache_fp);
+
+	int temp_num_emails = 0;
+    get_emails_direct(root_dir,cache_fp,&temp_num_emails);
+
+    // fill in number of emails in cache
+    fseek(cache_fp,0,SEEK_SET);
+    fprintf(cache_fp,"%d",temp_num_emails);
+
+    fclose(cache_fp);
+
+    // rename temp cache to real cache
+    if(!MoveFileA(cache_file_path,cache_file_path_del))  return;
+    if(!MoveFileA(cache_file_path_temp,cache_file_path)) return;
+    DeleteFileA(cache_file_path_del);
+
+    // set num_emails to new num_emails
+    num_emails = temp_num_emails;
+     
+    // mark update cache flag for main thread to refresh
+    cache_is_updated = true;
+}
+
 static void store_cache()
 {
     FILE *fp = fopen(cache_file_path,"wb");
@@ -1074,6 +1530,7 @@ static void store_cache()
 		fprintf(fp, "%d;%s", strlen(emails[i].date_formatted), emails[i].date_formatted);
 		fprintf(fp, "%d;%s", strlen(emails[i].subject), emails[i].subject);
 		fprintf(fp, "%d;", emails[i].attachment_count);
+
 		for(int j = 0; j < emails[i].attachment_count; ++j)
         {
 			fprintf(fp, "%d;%s", strlen(emails[i].attachments[j]), emails[i].attachments[j]);
@@ -1092,7 +1549,7 @@ static bool load_cache()
     if(fp == NULL)
         return false;
 
-	fscanf(fp, "%d;", &num_emails);
+	fscanf(fp, "%d ;", &num_emails);
 
 	filtered_indicies = (int*)malloc(num_emails*sizeof(int));
 	sorted_indicies = (int*)malloc(num_emails*sizeof(int));
@@ -1218,10 +1675,6 @@ static void post_process_email_fields()
 		int to_length = strlen(emails[i].to);
         char* to_temp = (char*)calloc(to_length+1, sizeof(char));
 
-        if(i == 5106)
-        {
-            printf("Help");
-        }
         int latest_length = str_replace(emails[i].to,"CN=","",to_temp);
 
 		emails[i].to_formatted = (char*)calloc(latest_length+1, sizeof(char));
@@ -1712,13 +2165,55 @@ static void parse_email(const char* file_path,int index)
 	}
 }
 
+static void store_pass()
+{
+    FILE *fp = fopen(bin_file_path,"wb");
+	
+	if (fp == NULL)
+		return;
+
+	char encrypted_password[BIN_LENGTH + 1] = { 0 };
+	strcpy(encrypted_password, encrypt_password(notes_password));
+
+	for(int i = 0; i < BIN_LENGTH; ++i)
+		fputc(encrypted_password[i],fp);
+
+    fclose(fp);
+}
+
+static void load_pass()
+{
+    FILE *fp = fopen(bin_file_path,"rb");
+	
+	if (fp == NULL)
+		return;
+
+    char encrypted_password[BIN_LENGTH+1] = {0};
+
+    int pass_length = 0;
+    char c;
+    for(;;)
+    {
+        c = fgetc(fp);
+
+        if(c == EOF)
+            break;
+
+        encrypted_password[pass_length++] = c;
+    }
+
+    strncpy(notes_password,decrypt_password(encrypted_password), pass_length);
+
+    fclose(fp);
+}
+
 static void store_config()
 {
     FILE *fp = fopen(config_file_path,"w");
 	
 	if (fp == NULL)
 		return;
-    
+
 	fprintf(fp,"root_dir: %s\n",root_dir);
     fprintf(fp,"xls_override: %d\n", xls_override);
 	fprintf(fp,"xls_program_path: %s\n",xls_program_path);
@@ -1739,79 +2234,131 @@ static void store_config()
     fprintf(fp,"orient_right: %d\n", orient_right);
 	fprintf(fp,"selected_style_index: %d\n", selected_style_index);
 	fprintf(fp,"selected_font_index: %d\n", selected_font_index);
+	fprintf(fp,"downloading_enabled: %d\n", is_automatic_downloading_enabled);
+	fprintf(fp,"downloading_frequency: %d\n", automatic_downloading_freq);
+	fprintf(fp,"downloading_pref_min: %d\n", automatic_downloading_pref_min);
+	fprintf(fp,"downloading_pref_hour: %d\n", automatic_downloading_pref_hour);
+	fprintf(fp,"downloading_pref_day: %d\n", automatic_downloading_pref_day);
+	fprintf(fp,"downloading_pref_dow: %d\n", automatic_downloading_pref_dow);
+
 
     fclose(fp);
 }
 
 static void load_config()
 {
-    FILE *fp = fopen(config_file_path,"r");
+    FILE *fp = fopen(config_file_path,"rb");
 
 	if (fp == NULL)
 		return;
-	
-	int generic_override;
 
-    fscanf(fp,"root_dir: %s\n",root_dir);
+    char key[100] = {0};
+    char val[2000] = {0};
 
-    fscanf(fp,"xls_override: %d\n", &generic_override);
-    xls_override = generic_override;
-	fscanf(fp,"xls_program_path: %260[^\n]\n",xls_program_path);
+    int index = 0;
 
-    fscanf(fp,"doc_override: %d\n", &generic_override);
-    doc_override = generic_override;
-	fscanf(fp,"doc_program_path: %260[^\n]\n",doc_program_path);
+    bool is_key = true;
 
-    fscanf(fp,"csv_override: %d\n", &generic_override);
-    csv_override = generic_override;
-	fscanf(fp,"csv_program_path: %260[^\n]\n",csv_program_path);
+    for(;;)
+    {
+        char c = fgetc(fp);
 
-    fscanf(fp,"txt_override: %d\n", &generic_override);
-    txt_override = generic_override;
-	fscanf(fp,"txt_program_path: %260[^\n]\n",txt_program_path);
+        if(c == EOF)
+            break;
 
-    fscanf(fp,"pdf_override: %d\n", &generic_override);
-    pdf_override = generic_override;
-	fscanf(fp,"pdf_program_path: %260[^\n]\n",pdf_program_path);
+        switch(c)
+        {
+            case  '#':
+                // comment
+                // read until eol or eof
+                for(;;)
+                {
+                    c = fgetc(fp);
 
-    fscanf(fp,"img_override: %d\n", &generic_override);
-    img_override = generic_override;
-	fscanf(fp,"img_program_path: %260[^\n]\n",img_program_path);
+                    if (c == EOF || c == '\n')
+                        break;
+                }
+                
+                break;
+            case  ':': 
+				if (!is_key)
+				{
+					val[index++] = c;
+					break;
+				}
+					
 
-    fscanf(fp,"misc_override: %d\n", &generic_override);
-    misc_override = generic_override;
-	fscanf(fp,"misc_program_path: %260[^\n]\n",misc_program_path);
+                is_key = false;
+                index = 0;
+                
+                // skip all whitespace after colon
+                for(;;)
+                {
+                    c = fgetc(fp);
 
-	fscanf(fp,"export_program_path: %260[^\n]\n",export_program_path);
-    fscanf(fp,"emails_window_width: %d\n",&emails_window_width);
-    
-    int orient_right_int;
-    fscanf(fp,"orient_right: %d\n", &orient_right_int);
-    orient_right = orient_right_int;
-    
-	fscanf(fp,"selected_style_index: %d\n", &selected_style_index);
-	fscanf(fp,"selected_font_index: %d\n", &selected_font_index);
+                    if (c == EOF || c == '\n' || !(c == ' ' || c == '\r' || c == '\t'))
+                    {
+                        // move back one
+                        fseek( fp, -1, SEEK_CUR);
+                        break; // no more whitespace
+                    }
+                }
+                break;
+			case '\r':
+				// ignore on Windows
+				break;
+            case '\n':
+                is_key = true;
+                index = 0;
 
-	if (selected_font_index < 0)
-		selected_font_index = 0;
+                int iVal;
 
-	ImGuiIO& io = ImGui::GetIO();
+                if(strcmp(key,"root_dir")  == 0) {strcpy(root_dir,val);}
+                else if(strcmp(key,"orient_right")  == 0) {iVal = atoi(val); orient_right = iVal;}
+                else if(strcmp(key,"xls_override")  == 0) {iVal = atoi(val); xls_override = iVal;}
+                else if(strcmp(key,"doc_override")  == 0) {iVal = atoi(val); doc_override = iVal;}
+                else if(strcmp(key,"csv_override")  == 0) {iVal = atoi(val); csv_override = iVal;}
+                else if(strcmp(key,"txt_override")  == 0) {iVal = atoi(val); txt_override = iVal;}
+                else if(strcmp(key,"pdf_override")  == 0) {iVal = atoi(val); pdf_override = iVal;}
+                else if(strcmp(key,"img_override")  == 0) {iVal = atoi(val); img_override = iVal;}
+                else if(strcmp(key,"misc_override") == 0) {iVal = atoi(val); misc_override = iVal;}
+                else if(strcmp(key,"xls_program_path")  == 0) {strcpy(xls_program_path,val);}
+                else if(strcmp(key,"doc_program_path")  == 0) {strcpy(doc_program_path,val);}
+                else if(strcmp(key,"csv_program_path")  == 0) {strcpy(csv_program_path,val);}
+                else if(strcmp(key,"txt_program_path")  == 0) {strcpy(txt_program_path,val);}
+                else if(strcmp(key,"pdf_program_path")  == 0) {strcpy(pdf_program_path,val);}
+                else if(strcmp(key,"img_program_path")  == 0) {strcpy(img_program_path,val);}
+                else if(strcmp(key,"misc_program_path") == 0) {strcpy(misc_program_path,val);}
+                else if(strcmp(key,"export_program_path")   == 0) {strcpy(export_program_path,val);}
+                else if(strcmp(key,"emails_window_width")   == 0) {iVal = atoi(val); emails_window_width = iVal;}
+                else if(strcmp(key,"selected_style_index")  == 0) {iVal = atoi(val); selected_style_index = iVal;}
+                else if(strcmp(key,"selected_font_index")   == 0) {iVal = atoi(val); selected_font_index = iVal;}
+                else if(strcmp(key,"downloading_enabled")   == 0) {iVal = atoi(val); is_automatic_downloading_enabled = iVal;}
+                else if(strcmp(key,"downloading_frequency") == 0) {iVal = atoi(val); automatic_downloading_freq = iVal;}
+                else if(strcmp(key,"downloading_pref_min")  == 0) {iVal = atoi(val); automatic_downloading_pref_min = iVal;}
+                else if(strcmp(key,"downloading_pref_hour") == 0) {iVal = atoi(val); automatic_downloading_pref_hour = iVal;}
+                else if(strcmp(key,"downloading_pref_day")  == 0) {iVal = atoi(val); automatic_downloading_pref_day = iVal;}
+                else if(strcmp(key,"downloading_pref_dow")  == 0) {iVal = atoi(val); automatic_downloading_pref_dow = iVal;}
 
-	if (selected_font_index >= io.Fonts->Fonts.Size)
-		selected_font_index = io.Fonts->Fonts.Size - 1;
-	
-    fclose(fp);
+                memset(key,0,100);
+                memset(val,0,2000);
+                break;
+            default:
+                // valid character
+                if(is_key)
+                    key[index++] = c;
+                else
+                    val[index++] = c;
+
+               break;
+        }
+    }
 }
 
 static void clear_email_memory()
 {
     for(int i = 0; i < num_emails; ++i)
     {
-		if (i == 5106)
-		{
-			printf("Help");
-		}
-
         if(emails[i].file_path != NULL) {free(emails[i].file_path); emails[i].file_path = NULL;}
         if(emails[i].to != NULL)        {free(emails[i].to);emails[i].to = NULL;}
         if(emails[i].to_formatted != NULL) {free(emails[i].to_formatted);emails[i].to_formatted = NULL;}
@@ -1847,7 +2394,22 @@ static void delete_email(int index)
     emails[index] = emails[num_emails];
 }
 
-static void export_emails()
+static void export_emails_with_pass(bool show, bool wait, const char* pass)
+{
+    char command[260] = {0};
+
+    strcpy(command,export_program_path);
+    strcat(command," ");
+    strcat(command,root_dir);
+    strcat(command," -p ");
+    strcat(command,pass);
+    strcat(command," -q ");
+    strcat(command," -b");
+
+    start_process(command,show, wait);
+}
+
+static void export_emails(bool show, bool wait)
 {
     char command[260] = {0};
 
@@ -1855,7 +2417,7 @@ static void export_emails()
     strcat(command," ");
     strcat(command,root_dir);
 
-    start_process(command,true);
+    start_process(command,show,wait);
 }
 
 static void get_emails(const char* directory_path)
@@ -1895,6 +2457,271 @@ static void get_emails(const char* directory_path)
     }
 
     closedir(dir);
+}
+
+static char* get_current_datetime(struct tm &tstruct)
+{
+	time_t     now = time(0);
+	char       buf[20] = {0};
+	tstruct = *localtime(&now);
+	strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+	return buf;
+}
+
+static void get_next_download_datetime(char* download_datetime)
+{
+    struct tm current_tstruct;
+    struct tm next_download_tstruct;
+
+    // get current time string of form: yyyy-MM-dd.HH:mm:ss
+    char* current_datetime = get_current_datetime(current_tstruct);
+
+    // get next download time string
+    next_download_tstruct.tm_sec   = current_tstruct.tm_sec;
+    next_download_tstruct.tm_min   = current_tstruct.tm_min;
+    next_download_tstruct.tm_hour  = current_tstruct.tm_hour;
+    next_download_tstruct.tm_mday  = current_tstruct.tm_mday;
+    next_download_tstruct.tm_mon   = current_tstruct.tm_mon;
+    next_download_tstruct.tm_year  = current_tstruct.tm_year;
+    next_download_tstruct.tm_wday  = current_tstruct.tm_wday;
+    next_download_tstruct.tm_yday  = current_tstruct.tm_yday;
+    next_download_tstruct.tm_isdst = current_tstruct.tm_isdst;
+
+	int num_sec_current = 0;
+	int num_sec_next = 0;
+
+	switch (automatic_downloading_freq)
+	{
+	case 0: 
+
+        next_download_tstruct.tm_min = automatic_downloading_pref_min;
+		next_download_tstruct.tm_sec = 0;
+
+        num_sec_current = 60*current_tstruct.tm_min + current_tstruct.tm_sec;
+        num_sec_next    = 60*next_download_tstruct.tm_min;
+
+        // check to see if current minute is greater than download minute
+        if(num_sec_current >= num_sec_next)
+        {
+            // need to increment hour
+            next_download_tstruct.tm_hour += 1;
+
+            if(next_download_tstruct.tm_hour > 23) {
+
+                next_download_tstruct.tm_hour = 0;
+                next_download_tstruct.tm_mday += 1;
+
+                if(next_download_tstruct.tm_mday > 31)
+                {
+                    next_download_tstruct.tm_mday = 1;
+                    next_download_tstruct.tm_mon  += 1;
+
+                    if(next_download_tstruct.tm_mon > 11)
+                    {
+                        next_download_tstruct.tm_mon = 0;
+                        next_download_tstruct.tm_year += 1;
+                    }
+                }
+            }
+        }
+        break; // every hour
+	case 1:
+
+        next_download_tstruct.tm_hour = automatic_downloading_pref_hour;
+        next_download_tstruct.tm_min = automatic_downloading_pref_min;
+		next_download_tstruct.tm_sec = 0;
+
+        num_sec_current = 3600*current_tstruct.tm_hour       + 60*current_tstruct.tm_min + current_tstruct.tm_sec;
+        num_sec_next    = 3600*next_download_tstruct.tm_hour + 60*next_download_tstruct.tm_min;
+
+        // check to see if current minute is greater than download minute
+        if(num_sec_current >= num_sec_next)
+        {
+            // increment day
+            next_download_tstruct.tm_mday += 1;
+
+            if(next_download_tstruct.tm_mday > 31)
+            {
+                next_download_tstruct.tm_mday = 1;
+                next_download_tstruct.tm_mon  += 1;
+
+                if(next_download_tstruct.tm_mon > 11)
+                {
+                    next_download_tstruct.tm_mon = 0;
+                    next_download_tstruct.tm_year += 1;
+                }
+            }
+        }
+        
+        break; // every day
+	case 2:
+        // U M T W H F S
+        // 0 1 2 3 4 5 6
+        // @TODO: Not done yet...
+        
+        next_download_tstruct.tm_wday = automatic_downloading_pref_dow;
+        next_download_tstruct.tm_mday += (next_download_tstruct.tm_wday - current_tstruct.tm_wday);
+        next_download_tstruct.tm_hour = automatic_downloading_pref_hour;
+        next_download_tstruct.tm_min  = automatic_downloading_pref_min;
+		next_download_tstruct.tm_sec  = 0;
+
+        num_sec_current = 86400*current_tstruct.tm_mday + 3600*current_tstruct.tm_hour       + 60*current_tstruct.tm_min + current_tstruct.tm_sec;
+        num_sec_next    = 86400*current_tstruct.tm_mday + 3600*next_download_tstruct.tm_hour + 60*next_download_tstruct.tm_min;
+
+        // check to see if current minute is greater than download minute
+        if(num_sec_current >= num_sec_next)
+        {
+            next_download_tstruct.tm_mday += 1;
+
+            if(next_download_tstruct.tm_mday > 31)
+            {
+                next_download_tstruct.tm_mday = 1;
+                next_download_tstruct.tm_mon  += 1;
+
+                if(next_download_tstruct.tm_mon > 11)
+                {
+                    next_download_tstruct.tm_mon = 0;
+                    next_download_tstruct.tm_year += 1;
+                }
+            }
+        }
+        
+        break; // every week
+	case 3: break; // every month
+
+        next_download_tstruct.tm_mday = automatic_downloading_pref_day;
+        next_download_tstruct.tm_hour = automatic_downloading_pref_hour;
+        next_download_tstruct.tm_min  = automatic_downloading_pref_min;
+		next_download_tstruct.tm_sec  = 0;
+
+        num_sec_current = 86400*current_tstruct.tm_mday       + 3600*current_tstruct.tm_hour       + 60*current_tstruct.tm_min + current_tstruct.tm_sec;
+        num_sec_next    = 86400*next_download_tstruct.tm_mday + 3600*next_download_tstruct.tm_hour + 60*next_download_tstruct.tm_min;
+
+        // check to see if current minute is greater than download minute
+        if(num_sec_current >= num_sec_next)
+        {
+            // increment month
+            next_download_tstruct.tm_mon  += 1;
+
+            if(next_download_tstruct.tm_mon > 11)
+            {
+                next_download_tstruct.tm_mon = 0;
+                next_download_tstruct.tm_year += 1;
+            }
+        }
+
+    case 4:
+            // this will make the download run continuously
+            break;
+	}
+
+	strftime(download_datetime, 20, "%Y-%m-%d.%X", &next_download_tstruct);
+}
+
+static char* get_encryption_key()
+{
+    char user_name[BIN_LENGTH + 1] = {0};
+    char key[BIN_LENGTH + 1]       = {0};
+
+    strcpy(key,"zPe&4GoFaQitU3Pk-FEeU7e*k)JrmgZZ");
+
+	DWORD size = 32;
+	LPDWORD lpd = &size;
+    if(GetUserNameA(user_name, lpd))
+	{
+		int user_name_len = strlen(user_name);
+		for (int i = 0; i < user_name_len;++i)
+		{
+			key[i] = user_name[i];
+		}
+	}
+
+    return key;
+}
+
+static char* encrypt_password(char* password)
+{
+    char* key = get_encryption_key();
+
+    char encrypted_password[BIN_LENGTH + 1] = {0};
+
+    int len = strlen(password);
+    for(int i = 0; i < BIN_LENGTH; ++i)
+    {
+		if (i < len)
+		{
+			char tmp = password[i] ^ key[i];
+			encrypted_password[i] = tmp;
+		}
+		else
+		{
+			encrypted_password[i] = '\0';
+		}
+  
+    }
+	OutputDebugStringA(encrypted_password);
+
+    encrypted_password[BIN_LENGTH] = '\0';
+
+    return encrypted_password;
+}
+
+static char* decrypt_password(char* encrypted_password)
+{
+	if (strlen(encrypted_password) > BIN_LENGTH)
+		return "";
+
+    char* key = get_encryption_key();
+
+    char password[BIN_LENGTH + 1] = {0};
+
+	int encrypted_password_length = strlen(encrypted_password);
+    int pass_length = 0;
+	for (int i = 0; i < encrypted_password_length; ++i)
+	{
+		char tmp = encrypted_password[pass_length] ^ key[i % encrypted_password_length];
+		password[i] = tmp;
+		++pass_length;
+	}
+    
+	OutputDebugStringA(password);
+
+    return password;
+
+}
+
+static bool time_to_download()
+{
+    struct tm current_tstruct;
+
+    char* current_datetime = get_current_datetime(current_tstruct);
+    int   compare_result   = strcmp(download_datetime,current_datetime);
+
+    if(compare_result < 0)
+    {
+        // current_datetime is past download_datetime!
+        get_next_download_datetime(download_datetime);
+    }
+    return (compare_result == 0);
+}
+
+static void download_emails_and_refresh()
+{
+    while (msg.message != WM_QUIT)
+    {
+        if (is_automatic_downloading_enabled)
+        {
+            if (time_to_download())
+            {
+                export_emails_with_pass(false,true,notes_password);
+                write_direct_to_cache(root_dir);
+                get_next_download_datetime(download_datetime);
+            }
+
+        }
+        Sleep(500);
+    }
 }
 
 static void display_main_menu()
@@ -1956,9 +2783,61 @@ static void display_main_menu()
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Download Emails From IBM Notes..."))
-                export_emails();
+            if (ImGui::BeginMenu("Automatic Downloading of Emails"))
+            {
+                ImGui::Checkbox("Enable Downloading",&is_automatic_downloading_enabled);
+
+				if (is_automatic_downloading_enabled)
+				{
+					ImGui::Separator();
+					ImGui::RadioButton("Every Hour",  &automatic_downloading_freq, 0);
+					ImGui::RadioButton("Every Day",   &automatic_downloading_freq, 1);
+					ImGui::RadioButton("Every Week",  &automatic_downloading_freq, 2);
+					ImGui::RadioButton("Every Month", &automatic_downloading_freq, 3);
+					ImGui::Separator();
+
+					if (automatic_downloading_freq == 3) ImGui::SliderInt("Preferred Day", &automatic_downloading_pref_day, 1, 31);
+					else if (automatic_downloading_freq == 2)
+					{
+						ImGui::ListBox("Day of Week", &automatic_downloading_pref_dow, dow_items, IM_ARRAYSIZE(dow_items), 4);
+					}
+					if (automatic_downloading_freq >= 1) ImGui::SliderInt("Preferred Hour", &automatic_downloading_pref_hour, 1, 24);
+					ImGui::SliderInt("Preferred Minute", &automatic_downloading_pref_min, 0, 59);
+
+					char pref_label[20] = { 0 };
+
+                    switch (automatic_downloading_freq)
+                    {
+                        case 0: sprintf(pref_label, ":%02d", automatic_downloading_pref_min); break; // every hour
+                        case 1: sprintf(pref_label, "%02d:%02d", automatic_downloading_pref_hour, automatic_downloading_pref_min); break; // every day
+                        case 2: sprintf(pref_label, "%s %02d:%02d", dow_items[automatic_downloading_pref_dow],automatic_downloading_pref_hour, automatic_downloading_pref_min); break; // every week
+                        case 3: sprintf(pref_label, "Day %d on %02d:%02d", automatic_downloading_pref_day ,automatic_downloading_pref_hour, automatic_downloading_pref_min); break; // every month
+                    }
+					
+					ImGui::Text(pref_label);
+                    ImGui::Separator();
+
+                    ImGui::InputText("Notes Password", notes_password, 100,pass_flags); 
+                    ImGui::SameLine();
+                    ImGui::Text("(<o>)");
+                    if (ImGui::IsItemActive() || ImGui::IsItemHovered())
+                        pass_flags = 0;
+                    else
+                        pass_flags = ImGuiInputTextFlags_Password | ImGuiInputTextFlags_CharsNoBlank;
+
+                    ImGui::Text("*A password is required for automatic downloading.\nThis password will be encrypted and stored in your\nlocal user folder.");
             
+                    // @CLEANUP: Should only do this when a propery has changed instead of every frame
+                    get_next_download_datetime(download_datetime);
+                }
+               
+                ImGui::EndMenu();
+            }
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Download Emails From IBM Notes..."))
+                export_emails(true,false);
+
 			if (ImGui::Button("Refresh Emails..."))
                 ImGui::OpenPopup("Refresh Emails");
             if (ImGui::BeginPopupModal("Refresh Emails", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -2137,6 +3016,62 @@ static void load_style_minimal()
 }
 
 static void load_style_monochrome()
+{
+    ImGuiStyle& style = ImGui::GetStyle();
+
+    style.Alpha = 1.0;
+    style.WindowRounding = 3;
+    style.GrabRounding = 1;
+    style.GrabMinSize = 20;
+    style.FrameRounding = 3;
+
+    style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.00f, 0.40f, 0.41f, 1.00f);
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+    style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+    style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 1.00f, 1.00f, 0.65f);
+    style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+    style.Colors[ImGuiCol_FrameBg] = ImVec4(0.44f, 0.80f, 0.80f, 0.18f);
+    style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.44f, 0.80f, 0.80f, 0.27f);
+    style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.44f, 0.81f, 0.86f, 0.66f);
+    style.Colors[ImGuiCol_TitleBg] = ImVec4(0.14f, 0.18f, 0.21f, 0.73f);
+    style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.54f);
+    style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.00f, 1.00f, 1.00f, 0.27f);
+    style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.20f);
+    style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.22f, 0.29f, 0.30f, 0.71f);
+    style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.00f, 1.00f, 1.00f, 0.44f);
+    style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.00f, 1.00f, 1.00f, 0.74f);
+    style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+	style.Colors[ImGuiCol_ChildBg] = ImVec4(0.16f, 0.24f, 0.22f, 0.60f);
+    style.Colors[ImGuiCol_CheckMark] = ImVec4(0.00f, 1.00f, 1.00f, 0.68f);
+    style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.00f, 1.00f, 1.00f, 0.36f);
+    style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.00f, 1.00f, 1.00f, 0.76f);
+    style.Colors[ImGuiCol_Button] = ImVec4(0.00f, 0.65f, 0.65f, 0.46f);
+    style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.01f, 1.00f, 1.00f, 0.43f);
+    style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.00f, 1.00f, 1.00f, 0.62f);
+    style.Colors[ImGuiCol_Header] = ImVec4(0.00f, 1.00f, 1.00f, 0.33f);
+    style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.00f, 1.00f, 1.00f, 0.42f);
+    style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.00f, 1.00f, 1.00f, 0.54f);
+    style.Colors[ImGuiCol_Column] = ImVec4(0.00f, 0.50f, 0.50f, 0.33f);
+    style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.00f, 0.50f, 0.50f, 0.47f);
+    style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.00f, 0.70f, 0.70f, 1.00f);
+    style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 1.00f, 1.00f, 0.54f);
+    style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.00f, 1.00f, 1.00f, 0.74f);
+    style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_CloseButton] = ImVec4(0.00f, 0.78f, 0.78f, 0.35f);
+    style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.00f, 0.78f, 0.78f, 0.47f);
+    style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.00f, 0.78f, 0.78f, 1.00f);
+    style.Colors[ImGuiCol_PlotLines] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.00f, 1.00f, 1.00f, 0.22f);
+    style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.04f, 0.10f, 0.09f, 0.51f);
+
+}
+
+static void load_style_gruvbox()
 {
     ImGuiStyle& style = ImGui::GetStyle();
 

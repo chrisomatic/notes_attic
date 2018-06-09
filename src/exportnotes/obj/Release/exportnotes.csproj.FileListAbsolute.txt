@@ -14,3 +14,12 @@ C:\dev\svn\notes_attic\src\exportnotes\obj\Release\exportnotes.pdb
 C:\dev\svn\notes_attic\src\exportnotes\bin\Release\exportnotes.exe
 C:\dev\svn\notes_attic\src\exportnotes\bin\Release\exportnotes.pdb
 C:\dev\svn\notes_attic\src\exportnotes\bin\Release\Interop.Domino.dll
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\exportnotes.exe.config
+C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\Interop.Domino.dll
+C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\exportnotes.csproj.ResolveComReference.cache
+C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\exportnotes.exe
+C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\exportnotes.pdb
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\exportnotes.exe
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\exportnotes.pdb
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\Interop.Domino.dll
+C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\exportnotes.csprojResolveAssemblyReference.cache

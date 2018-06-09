@@ -1,4 +1,4 @@
-static void start_process(char* command,bool show_window = false)
+static void start_process(char* command,bool show_window = false, bool wait = false)
 {
 
     STARTUPINFOA si = {0};
@@ -32,8 +32,11 @@ static void start_process(char* command,bool show_window = false)
         return;
     }
 
-    //WaitForSingleObject(pi.hProcess, INFINITE);
+    if(wait)
+    {
+        WaitForSingleObject(pi.hProcess, INFINITE);
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
 
-    //CloseHandle( pi.hProcess);
-    //CloseHandle( pi.hThread);
+    }
 }

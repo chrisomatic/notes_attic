@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Threading;
 using Domino;
 
 namespace exportnotes
@@ -39,6 +40,7 @@ namespace exportnotes
         static string     specified_nsf;
         static string     export_dir;
         static bool       quiet;
+        static bool       background;
         
         static int orig_row;
         static int orig_col;
@@ -57,6 +59,7 @@ namespace exportnotes
             wrl(" -p: Specify password. If this option is not specified, you'll be prompted for a password");
             wrl(" -q: Quiet. Suppress all unnecessary output from program.");
             wrl(" -f: Specify the .nsf file that will override the default assumed name (no need to include extension). e.g -f john_doe2");
+            wrl(" -b: Background. Adds some delay so CPU % isn't greedy while it exports.");
             wrl(" -?: Show this help display.");
             wrl();
             wrl("Examples:");
@@ -81,6 +84,7 @@ namespace exportnotes
             pass   = "";
             specified_nsf = "";
             quiet  = false;
+            background = false;
             curr_document = 0;
 
             // handle commandline args
@@ -132,6 +136,9 @@ namespace exportnotes
                             break;
                         case 'q':
                             quiet = true;
+                            break;
+                        case 'b':
+                            background = true;
                             break;
                     }
                 }
@@ -230,8 +237,11 @@ namespace exportnotes
             
             archive();
 
-            wr("\nPress any key to exit...");
-            System.Console.ReadKey();
+            if(!quiet)
+            {
+                wr("\nPress any key to exit...");
+                System.Console.ReadKey();
+            }
 
             return 0;
         }
@@ -295,8 +305,6 @@ namespace exportnotes
             }
 
             int document_count = 0;
-
-            
 
             while (document != null)
             {
@@ -507,6 +515,8 @@ namespace exportnotes
                 }
 
                 ++document_count;
+
+                if(background) Thread.Sleep(10);
             }
 
             if (!quiet) write_at("=", curr_progress, 1);
@@ -633,6 +643,7 @@ namespace exportnotes
             {
                 count++;
                 document = view.GetNextDocument(document);
+                if(background) Thread.Sleep(1);
             }
 
             return count;
