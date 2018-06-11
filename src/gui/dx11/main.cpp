@@ -504,12 +504,12 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
             continue;
         }
 
-		if (IsIconic(hwnd))
+		if (IsIconic(hwnd) || !IsWindowVisible(hwnd))
 		{
 			// reduce cpu usage when minimized
 			Sleep(1);
 			continue;
-		}	
+		}
 
         if(cache_is_updated)
         {
@@ -624,6 +624,8 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 
         g_pSwapChain->Present(1, 0); // Present with vsync
         //g_pSwapChain->Present(0, 0); // Present without vsync
+
+		Sleep(1);
 
     }
 
@@ -2724,7 +2726,7 @@ static void download_emails_and_refresh()
             }
 
         }
-        Sleep(500);
+        Sleep(200);
     }
 }
 
@@ -2876,7 +2878,7 @@ static void display_main_menu()
 
 static bool show_style_selector(const char* label)
 {
-    if (ImGui::Combo(label, &selected_style_index, "Classic\0Dark\0Light\0Monochrome\0Ecstacy\0Minimal\0Gruvbox\0Gruvbox_Light"))
+    if (ImGui::Combo(label, &selected_style_index, "Classic\0Dark\0Light\0Monochrome\0Ecstacy\0Minimal\0Gruvbox_Dark\0Gruvbox_Light"))
     {
 		switch (selected_style_index)
         {

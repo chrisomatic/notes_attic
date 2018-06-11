@@ -14,7 +14,7 @@ Hey, Thanks for downloading Notes Attic. I hope you like it!
 
 If this is your first time using the program, just open up "notes_attic.exe".
 You probably won't see any emails when you first open it up - That's because you
-have to export your current emails from Lotus Notes first. By default the directory 
+have to download your current emails from IBM Notes first. The default directory 
 where the emails will be exported is C:\email_archive. You can change this if you like
 by going to the menu: 
 
@@ -22,7 +22,7 @@ by going to the menu:
 
 After that, you can export your emails by going to the menu:
 
-[1] Emails > Download Emails from Notes
+[2] Emails > Download Emails from Notes
 
 It should run the "exportnotes.exe" command-line program that comes with the download.
 Type in your password for IBM Notes, then it should begin downloading your emails and attachments to
@@ -30,7 +30,7 @@ the "root_dir".
 
 Once the emails are exported. 
 
-[3] Go to Emails > Refresh Emails. And click "Ok, Do It."
+[3] Emails > Refresh Emails. And click "Ok, Do It."
 
 It will then start reading all the emails that were just exported. This will need to be done every time 
 you export more emails from Lotus Notes. Once it's finished you should be able to click around and see some 
@@ -41,18 +41,22 @@ Upon opening up the program again, you should see your emails automatically show
 *Note: When exporting emails, it will try to export all of your emails. If the email has already been exported,
 it will not export it again. This will prevent duplicates and allow your email archive to grow without issue.
 
+Automatic Downloading of Emails
+-------------------------------
+You can enable automatic download of emails from the menu:
+
+Emails > Automatic Downloading of Emails > Enable Downloading
+
+You can specify if you want to download your emails Hourly, Daily, Weekly, or Monthly.
+
 Fonts
 --------------------
 These fonts are included with Notes Attic.They should be included in a fonts\ folder in the application directory.
 
 Inconsolata.ttf
 Karla.ttf
-Lora.ttf
-OpenSans.ttf
 PT_Sans.ttf
-Segoe_UI.ttf
 Ubuntu.ttf
-Verdana.ttf
 
 If a font is not found it is not loaded. If none of the fonts are found, it will use the default embedded font.
 
