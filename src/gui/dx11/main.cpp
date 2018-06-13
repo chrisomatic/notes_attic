@@ -102,6 +102,7 @@ static bool cache_is_updated = false;
 static char notes_password[100] = {0};
 static char config_path[MAX_PATH];
 static char* download_datetime;
+static char* get_app_directory();
 
 static HMENU hmenu;
 static GUID guid;
@@ -309,6 +310,7 @@ static void get_emails(const char* directory_path);
 static void delete_email(int index);
 static void export_emails(bool show, bool wait);
 static void export_emails_with_pass(bool show,bool wait, const char* pass);
+static void export_emails_with_pass_background(bool show,bool wait, const char* pass);
 static void download_emails_and_refresh();
 static void display_main_menu();
 static void apply_filters();
@@ -335,13 +337,15 @@ static void load_style_ecstacy();
 static void load_style_minimal();
 static void load_style_gruvbox();
 static void load_style_gruvbox_light();
+static void load_style_gumby();
 static void draw_filters_email_list(int x);
 static void draw_header_body_attachments(int x);
 static char* get_current_datetime(struct tm &tstruct);
 static void get_next_download_datetime(char* download_datetime);
 static bool time_to_download();
-static bool directory_exists(const char* szPath);
-static bool file_exists(const char* file);
+static bool directory_exists(char* szPath);
+static bool file_exists(char* file);
+static char* get_app_full_file_path(char* relative_file_path);
 static char* encrypt_password(char* password);
 static char* decrypt_password(char* encrypted_password);
 
@@ -356,20 +360,22 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	//FreeConsole();
 	CreateDirectoryA((LPCSTR)config_path, NULL);
 
+	int config_path_length = strlen(config_path);
+
 	// set cache and config file locations
-	strcpy(cache_file_path, config_path);
+	strncpy(cache_file_path, config_path, config_path_length);
 	strcat(cache_file_path, "attic.data");
 
-	strcpy(cache_file_path_temp, config_path);
+	strncpy(cache_file_path_temp, config_path, config_path_length);
 	strcat(cache_file_path_temp, "attic_temp.data");
 
-	strcpy(cache_file_path_del, config_path);
+	strncpy(cache_file_path_del, config_path, config_path_length);
 	strcat(cache_file_path_del, "attic_del.data");
 
-	strcpy(config_file_path, config_path);
+	strncpy(config_file_path, config_path, config_path_length);
 	strcat(config_file_path, "attic.cfg");
 
-	strcpy(bin_file_path, config_path);
+	strncpy(bin_file_path, config_path, config_path_length);
 	strcat(bin_file_path, "attic.bin");
 
 	window_width = 1280;
@@ -423,18 +429,42 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	config.OversampleV = 1;
 	config.GlyphExtraSpacing.x = 1.0f;
 
+    int num_fonts = 1;
     ImGuiIO& io = ImGui::GetIO();
-    //io.Fonts->AddFontDefault();
-	if (directory_exists("fonts"))
+
+	char full_path_fonts[MAX_PATH] = { 0 };
+	strcpy(full_path_fonts, get_app_full_file_path("fonts\\"));
+
+	if (directory_exists(full_path_fonts))
 	{
-		if (file_exists("fonts/PT_Sans.ttf")) io.Fonts->AddFontFromFileTTF("fonts/PT_Sans.ttf", 16.0f);
-		//if (file_exists("fonts/Segoe_UI.ttf")) io.Fonts->AddFontFromFileTTF("fonts/Segoe_UI.ttf", 16.0f);
-		//if (file_exists("fonts/OpenSans.ttf")) io.Fonts->AddFontFromFileTTF("fonts/OpenSans.ttf", 16.0f);
-		//if (file_exists("fonts/Verdana.ttf")) io.Fonts->AddFontFromFileTTF("fonts/Verdana.ttf", 16.0f);
-		if (file_exists("fonts/Karla.ttf")) io.Fonts->AddFontFromFileTTF("fonts/Karla.ttf", 16.0f);
-		if (file_exists("fonts/Inconsolata.ttf")) io.Fonts->AddFontFromFileTTF("fonts/Inconsolata.ttf", 16.0f);
-		if (file_exists("fonts/Ubuntu.ttf")) io.Fonts->AddFontFromFileTTF("fonts/Ubuntu.ttf", 16.0f);
-		//if (file_exists("fonts/Lora.ttf")) io.Fonts->AddFontFromFileTTF("fonts/Lora.ttf", 16.0f);
+        bool font_loaded = false;
+
+		char font_pt_sans[MAX_PATH] = { 0 };
+        char font_karla[MAX_PATH] = { 0 }; 
+        char font_inconsolata[MAX_PATH] = { 0 };
+        char font_ubuntu[MAX_PATH] = { 0 };
+
+		char* full_path_pt_sans = get_app_full_file_path("fonts\\PT_Sans.ttf");
+		strncpy(font_pt_sans, full_path_pt_sans, strlen(full_path_pt_sans));
+
+		char* full_path_karla = get_app_full_file_path("fonts\\Karla.ttf");
+		strncpy(font_karla, full_path_karla, strlen(full_path_karla));
+
+		char* full_path_inconsolata = get_app_full_file_path("fonts\\Inconsolata.ttf");
+		strncpy(font_inconsolata, full_path_inconsolata, strlen(full_path_inconsolata));
+
+		char* full_path_ubuntu = get_app_full_file_path("fonts\\Ubuntu.ttf");
+		strncpy(font_ubuntu, full_path_ubuntu, strlen(full_path_ubuntu));
+		
+		if (file_exists(font_pt_sans))     {io.Fonts->AddFontFromFileTTF(font_pt_sans    ,16.0f); font_loaded = true;}
+		if (file_exists(font_karla))       {io.Fonts->AddFontFromFileTTF(font_karla      ,16.0f); font_loaded = true;}
+		if (file_exists(font_inconsolata)) {io.Fonts->AddFontFromFileTTF(font_inconsolata,16.0f); font_loaded = true;}
+		if (file_exists(font_ubuntu))      {io.Fonts->AddFontFromFileTTF(font_ubuntu     ,16.0f); font_loaded = true;}
+
+        if(font_loaded)
+            num_fonts = 4; 
+        else
+            io.Fonts->AddFontDefault();
 	}
 	else
 	{
@@ -445,32 +475,36 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	ImGuiFreeType::BuildFontAtlas(io.Fonts, flags);
 
     // load defaults
-    strcpy(root_dir,default_root_dir);
-    strcpy(xls_program_path,default_xls_path);
-    strcpy(doc_program_path,default_doc_path);
-    strcpy(csv_program_path,default_csv_path);
-    strcpy(txt_program_path,default_txt_path);
-    strcpy(pdf_program_path,default_pdf_path);
-    strcpy(img_program_path,default_img_path);
-    strcpy(misc_program_path,default_misc_path);
-    strcpy(export_program_path,default_export_program_path);
+    strncpy(root_dir,default_root_dir,strlen(root_dir));
+    strncpy(xls_program_path,default_xls_path, strlen(default_xls_path));
+    strncpy(doc_program_path,default_doc_path, strlen(default_doc_path));
+    strncpy(csv_program_path,default_csv_path, strlen(default_csv_path));
+    strncpy(txt_program_path,default_txt_path, strlen(default_txt_path));
+    strncpy(pdf_program_path,default_pdf_path, strlen(default_pdf_path));
+    strncpy(img_program_path,default_img_path, strlen(default_img_path));
+    strncpy(misc_program_path,default_misc_path, strlen(default_misc_path));
+    strncpy(export_program_path,default_export_program_path, strlen(default_export_program_path));
 
     load_config();
     load_pass();
 
 	// Setup style
+    if(selected_font_index > num_fonts - 1)
+        selected_font_index = 0;
+
 	io.FontDefault = io.Fonts->Fonts[selected_font_index];
 
 	switch (selected_style_index)
 	{
-	case 0: ImGui::StyleColorsClassic(); header_color = ImVec4(0.4f,0.2f,0.8f,1.0f);break;
-	case 1: ImGui::StyleColorsDark();    header_color = ImVec4(0.4f,0.5f,0.7f,1.0f);break;
-	case 2: ImGui::StyleColorsLight();   header_color = ImVec4(0.2f,0.4f,0.9f,1.0f);break;
-	case 3: load_style_monochrome();     header_color = ImVec4(0.07f,0.34f,0.34f,1.0f);break;
-	case 4: load_style_ecstacy();        header_color = ImVec4(1.0f,1.0f,1.0f,1.0f);break;
-	case 5: load_style_minimal();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
-	case 6: load_style_gruvbox();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
-	case 7: load_style_gruvbox_light();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
+	case 0: ImGui::StyleColorsClassic(); header_color = ImVec4(0.400f,0.200f,0.800f,1.000f); break;
+	case 1: ImGui::StyleColorsDark();    header_color = ImVec4(0.400f,0.500f,0.700f,1.000f); break;
+	case 2: ImGui::StyleColorsLight();   header_color = ImVec4(0.200f,0.400f,0.900f,1.000f); break;
+	case 3: load_style_monochrome();     header_color = ImVec4(0.070f,0.340f,0.340f,1.000f); break;
+	case 4: load_style_ecstacy();        header_color = ImVec4(1.000f,1.000f,1.000f,1.000f); break;
+	case 5: load_style_minimal();        header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
+	case 6: load_style_gruvbox();        header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
+	case 7: load_style_gruvbox_light();  header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
+	case 8: load_style_gumby();          header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
 	}
 
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -623,7 +657,6 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
         ImGui::Render();
 
         g_pSwapChain->Present(1, 0); // Present with vsync
-        //g_pSwapChain->Present(0, 0); // Present without vsync
 
 		Sleep(1);
 
@@ -814,7 +847,7 @@ static void draw_filters_email_list(int x)
                 {
                     char command[260] = {0};
 
-                    strcpy(command, "\"");strcat(command, txt_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, txt_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, e.file_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -956,17 +989,17 @@ static void draw_header_body_attachments(int x)
 
             if(str_startswith(curr_email.attachments[i],"\\"))
             {
-                strcpy(full_attachment_path, root_dir);
+                strncpy(full_attachment_path, root_dir,strlen(root_dir));
                 strcat(full_attachment_path, curr_email.attachments[i]);
             }
             else
-                strcpy(full_attachment_path,curr_email.attachments[i]);
+                strncpy(full_attachment_path,curr_email.attachments[i],strlen(curr_email.attachments[i]));
 
             if (strcmp(ext, "xls") == 0 || strcmp(ext, "xlsx") == 0 || strcmp(ext, "xlsm") == 0)
             {
                 if(xls_override)
                 {
-                    strcpy(command, "\"");strcat(command, xls_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, xls_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, full_attachment_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -979,7 +1012,7 @@ static void draw_header_body_attachments(int x)
             {
                 if(doc_override)
                 {
-                    strcpy(command, "\"");strcat(command, doc_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, doc_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, full_attachment_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -992,7 +1025,7 @@ static void draw_header_body_attachments(int x)
             {
                 if(csv_override)
                 {
-                    strcpy(command, "\"");strcat(command, csv_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, csv_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, full_attachment_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -1005,7 +1038,7 @@ static void draw_header_body_attachments(int x)
             {
                 if(txt_override)
                 {
-                    strcpy(command, "\"");strcat(command, txt_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, txt_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, full_attachment_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -1018,7 +1051,7 @@ static void draw_header_body_attachments(int x)
             {
                 if(pdf_override)
                 {
-                    strcpy(command, "\"");strcat(command, pdf_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, pdf_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, full_attachment_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -1045,7 +1078,7 @@ static void draw_header_body_attachments(int x)
             {
                 if(misc_override)
                 {
-                    strcpy(command, "\"");strcat(command, misc_program_path);strcat(command, "\" ");
+                    strncpy(command, "\"",2);strcat(command, misc_program_path);strcat(command, "\" ");
                     strcat(command, "\"");strcat(command, full_attachment_path);strcat(command, "\"");
                     start_process(command);
                 }
@@ -1066,11 +1099,11 @@ static void draw_header_body_attachments(int x)
 
                 if(str_startswith(curr_email.attachments[i],"\\"))
                 {
-                    strcpy(full_attachment_path, root_dir);
+                    strncpy(full_attachment_path, root_dir,strlen(root_dir));
                     strcat(full_attachment_path, curr_email.attachments[i]);
                 }
                 else
-                    strcpy(full_attachment_path,curr_email.attachments[i]);
+                    strncpy(full_attachment_path,curr_email.attachments[i],strlen(curr_email.attachments[i]));
 
                 ImGui::SetClipboardText(full_attachment_path);
             }
@@ -1095,21 +1128,22 @@ static void start_default_process(const char* path)
 {
     char command[260] = {0};
 
-    strcpy(command,"cmd /c \"start /B \"\" \"");
+    strncpy(command,"cmd /c \"start /B \"\" \"",21);
     strcat(command,path);
     strcat(command,"\"\"");
     start_process(command);
 }
 
-static bool directory_exists(const char* szPath)
+static bool directory_exists(char* dir)
 {
-	DWORD dwAttrib = GetFileAttributesA((LPCSTR)szPath);
+
+	DWORD dwAttrib = GetFileAttributesA((LPCSTR)dir);
 
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
 		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-static bool file_exists(const char* file)
+static bool file_exists(char* file)
 {
 	WIN32_FIND_DATAA FindFileData;
 	HANDLE handle = FindFirstFileA(file, &FindFileData);
@@ -1119,6 +1153,39 @@ static bool file_exists(const char* file)
 		FindClose(handle);
 	}
 	return found;
+}
+
+static char* get_app_full_file_path(char* relative_file_path)
+{
+        char full_path[MAX_PATH] = {0};
+
+        char* app_dir = get_app_directory();
+        strncpy(full_path,app_dir,strlen(app_dir));
+        strncat(full_path,relative_file_path, strlen(relative_file_path));
+
+		return full_path;
+}
+
+static char* get_app_directory()
+{
+    HMODULE hModule = GetModuleHandleA(NULL);
+    char path[MAX_PATH] = {0};
+    GetModuleFileNameA(hModule, path, MAX_PATH);
+
+    int path_length = strlen(path);
+    int binary_length = 0;
+    for(int i = path_length - 1; i >= 0; --i)
+    {
+        if(path[i] == '\\' || path[i] == '/')
+            break;
+
+        ++binary_length;
+    }
+
+    char just_dir[MAX_PATH] = {0};
+    strncpy(just_dir,path,path_length - binary_length);
+
+    return just_dir;
 }
 
 static char* dt_convert_to_sortable_format(const char* date)
@@ -1214,7 +1281,7 @@ static void get_emails_direct(const char* directory_path,FILE* cache_fp,int* tem
 			continue;
 
         char full_path[MAX_PATH] = {0};
-        strcpy(full_path,directory_path);
+        strncpy(full_path,directory_path,strlen(directory_path));
         strcat(full_path,"\\");
         strcat(full_path,dp->d_name);
 
@@ -2179,7 +2246,7 @@ static void store_pass()
 		return;
 
 	char encrypted_password[BIN_LENGTH + 1] = { 0 };
-	strcpy(encrypted_password, encrypt_password(notes_password));
+	strncpy(encrypted_password, encrypt_password(notes_password), BIN_LENGTH);
 
 	for(int i = 0; i < BIN_LENGTH; ++i)
 		fputc(encrypted_password[i],fp);
@@ -2253,7 +2320,7 @@ static void store_config()
 
 static void load_config()
 {
-    FILE *fp = fopen(config_file_path,"rb");
+    FILE *fp = fopen(config_file_path,"r");
 
 	if (fp == NULL)
 		return;
@@ -2319,7 +2386,7 @@ static void load_config()
 
                 int iVal;
 
-                if(strcmp(key,"root_dir")  == 0) {strcpy(root_dir,val);}
+                if(strcmp(key,"root_dir")  == 0) {strncpy(root_dir,val,strlen(val));}
                 else if(strcmp(key,"orient_right")  == 0) {iVal = atoi(val); orient_right = iVal;}
                 else if(strcmp(key,"xls_override")  == 0) {iVal = atoi(val); xls_override = iVal;}
                 else if(strcmp(key,"doc_override")  == 0) {iVal = atoi(val); doc_override = iVal;}
@@ -2328,14 +2395,14 @@ static void load_config()
                 else if(strcmp(key,"pdf_override")  == 0) {iVal = atoi(val); pdf_override = iVal;}
                 else if(strcmp(key,"img_override")  == 0) {iVal = atoi(val); img_override = iVal;}
                 else if(strcmp(key,"misc_override") == 0) {iVal = atoi(val); misc_override = iVal;}
-                else if(strcmp(key,"xls_program_path")  == 0) {strcpy(xls_program_path,val);}
-                else if(strcmp(key,"doc_program_path")  == 0) {strcpy(doc_program_path,val);}
-                else if(strcmp(key,"csv_program_path")  == 0) {strcpy(csv_program_path,val);}
-                else if(strcmp(key,"txt_program_path")  == 0) {strcpy(txt_program_path,val);}
-                else if(strcmp(key,"pdf_program_path")  == 0) {strcpy(pdf_program_path,val);}
-                else if(strcmp(key,"img_program_path")  == 0) {strcpy(img_program_path,val);}
-                else if(strcmp(key,"misc_program_path") == 0) {strcpy(misc_program_path,val);}
-                else if(strcmp(key,"export_program_path")   == 0) {strcpy(export_program_path,val);}
+                else if(strcmp(key,"xls_program_path")  == 0) {strncpy(xls_program_path,val, strlen(val));}
+                else if(strcmp(key,"doc_program_path")  == 0) {strncpy(doc_program_path,val, strlen(val));}
+                else if(strcmp(key,"csv_program_path")  == 0) {strncpy(csv_program_path,val, strlen(val));}
+                else if(strcmp(key,"txt_program_path")  == 0) {strncpy(txt_program_path,val, strlen(val));}
+                else if(strcmp(key,"pdf_program_path")  == 0) {strncpy(pdf_program_path,val, strlen(val));}
+                else if(strcmp(key,"img_program_path")  == 0) {strncpy(img_program_path,val, strlen(val));}
+                else if(strcmp(key,"misc_program_path") == 0) {strncpy(misc_program_path,val, strlen(val));}
+                else if(strcmp(key,"export_program_path")   == 0) {strncpy(export_program_path,val, strlen(val));}
                 else if(strcmp(key,"emails_window_width")   == 0) {iVal = atoi(val); emails_window_width = iVal;}
                 else if(strcmp(key,"selected_style_index")  == 0) {iVal = atoi(val); selected_style_index = iVal;}
                 else if(strcmp(key,"selected_font_index")   == 0) {iVal = atoi(val); selected_font_index = iVal;}
@@ -2400,17 +2467,29 @@ static void delete_email(int index)
     emails[index] = emails[num_emails];
 }
 
-static void export_emails_with_pass(bool show, bool wait, const char* pass)
+static void export_emails_with_pass_background(bool show, bool wait, const char* pass)
 {
     char command[260] = {0};
 
-    strcpy(command,export_program_path);
+    strncpy(command,export_program_path,strlen(export_program_path));
     strcat(command," ");
     strcat(command,root_dir);
     strcat(command," -p ");
     strcat(command,pass);
-    strcat(command," -q ");
+    strcat(command," -q");
     strcat(command," -b");
+
+    start_process(command,show, wait);
+}
+static void export_emails_with_pass(bool show, bool wait, const char* pass)
+{
+    char command[260] = {0};
+
+    strncpy(command,export_program_path,strlen(export_program_path));
+    strcat(command," ");
+    strcat(command,root_dir);
+    strcat(command," -p ");
+    strcat(command,pass);
 
     start_process(command,show, wait);
 }
@@ -2419,7 +2498,7 @@ static void export_emails(bool show, bool wait)
 {
     char command[260] = {0};
 
-    strcpy(command,export_program_path);
+    strncpy(command,export_program_path,strlen(export_program_path));
     strcat(command," ");
     strcat(command,root_dir);
 
@@ -2447,14 +2526,14 @@ static void get_emails(const char* directory_path)
 			continue;
 
         char full_path[MAX_PATH] = {0};
-        strcpy(full_path,directory_path);
+        strncpy(full_path,directory_path,strlen(directory_path));
         strcat(full_path,"\\");
         strcat(full_path,dp->d_name);
 
         if(str_startswith(dp->d_name,"email_"))
         {
             emails[num_emails].file_path = (char*)calloc(strlen(full_path)+1,sizeof(char));
-            strcpy(emails[num_emails].file_path,full_path);
+            strncpy(emails[num_emails].file_path,full_path,strlen(full_path));
             //parse_email(full_path, num_emails);
 			++num_emails;
         }
@@ -2630,7 +2709,7 @@ static char* get_encryption_key()
     char user_name[BIN_LENGTH + 1] = {0};
     char key[BIN_LENGTH + 1]       = {0};
 
-    strcpy(key,"zPe&4GoFaQitU3Pk-FEeU7e*k)JrmgZZ");
+    strncpy(key,"zPe&4GoFaQitU3Pk-FEeU7e*k)JrmgZZ",BIN_LENGTH);
 
 	DWORD size = 32;
 	LPDWORD lpd = &size;
@@ -2643,34 +2722,41 @@ static char* get_encryption_key()
 		}
 	}
 
+	OutputDebugStringA(user_name);
+
     return key;
 }
 
 static char* encrypt_password(char* password)
 {
-    char* key = get_encryption_key();
+	char pass[BIN_LENGTH + 1] = { 0 };
+	strncpy(pass, password, BIN_LENGTH);
 
-    char encrypted_password[BIN_LENGTH + 1] = {0};
+	char key[BIN_LENGTH + 1] = { 0 };
+	strncpy(key, get_encryption_key(), BIN_LENGTH);
 
-    int len = strlen(password);
+    char encrypted_pass[BIN_LENGTH + 1] = {0};
+
+    int len = strlen(pass);
+
     for(int i = 0; i < BIN_LENGTH; ++i)
     {
 		if (i < len)
 		{
-			char tmp = password[i] ^ key[i];
-			encrypted_password[i] = tmp;
+			encrypted_pass[i] = pass[i] ^ key[i];
 		}
 		else
 		{
-			encrypted_password[i] = '\0';
+			encrypted_pass[i] = '\0';
 		}
-  
+
+		OutputDebugStringA(encrypted_pass);
+		OutputDebugStringA("\n");
     }
-	OutputDebugStringA(encrypted_password);
 
-    encrypted_password[BIN_LENGTH] = '\0';
+    encrypted_pass[BIN_LENGTH] = '\0';
 
-    return encrypted_password;
+    return encrypted_pass;
 }
 
 static char* decrypt_password(char* encrypted_password)
@@ -2678,7 +2764,8 @@ static char* decrypt_password(char* encrypted_password)
 	if (strlen(encrypted_password) > BIN_LENGTH)
 		return "";
 
-    char* key = get_encryption_key();
+	char key[BIN_LENGTH + 1] = { 0 };
+	strncpy(key, get_encryption_key(), BIN_LENGTH);
 
     char password[BIN_LENGTH + 1] = {0};
 
@@ -2690,8 +2777,6 @@ static char* decrypt_password(char* encrypted_password)
 		password[i] = tmp;
 		++pass_length;
 	}
-    
-	OutputDebugStringA(password);
 
     return password;
 
@@ -2720,7 +2805,7 @@ static void download_emails_and_refresh()
         {
             if (time_to_download())
             {
-                export_emails_with_pass(false,true,notes_password);
+                export_emails_with_pass_background(false,true,notes_password);
                 write_direct_to_cache(root_dir);
                 get_next_download_datetime(download_datetime);
             }
@@ -2780,7 +2865,7 @@ static void display_main_menu()
             {
                 char command[300] = {0};
 
-                strcpy(command,"C:\\Windows\\SysWOW64\\explorer.exe");
+                strncpy(command,"C:\\Windows\\SysWOW64\\explorer.exe",32);
                 strcat(command," \"");
                 strcat(command,root_dir);
                 strcat(command,"\"");
@@ -2842,7 +2927,12 @@ static void display_main_menu()
             ImGui::Separator();
 
             if (ImGui::MenuItem("Download Emails From IBM Notes..."))
-                export_emails(true,false);
+            {
+                if(strcmp(notes_password,"") == 0)
+                    export_emails(true,false); // manually ask for password
+                else
+                    export_emails_with_pass(true,false,notes_password); // feed password in
+            }
 
 			if (ImGui::Button("Refresh Emails..."))
                 ImGui::OpenPopup("Refresh Emails");
@@ -2878,7 +2968,7 @@ static void display_main_menu()
 
 static bool show_style_selector(const char* label)
 {
-    if (ImGui::Combo(label, &selected_style_index, "Classic\0Dark\0Light\0Monochrome\0Ecstacy\0Minimal\0Gruvbox_Dark\0Gruvbox_Light"))
+    if (ImGui::Combo(label, &selected_style_index, "Classic\0Dark\0Light\0Monochrome\0Ecstacy\0Minimal\0Gruvbox_Dark\0Gruvbox_Light\0Gumby"))
     {
 		switch (selected_style_index)
         {
@@ -2890,6 +2980,7 @@ static bool show_style_selector(const char* label)
         case 5: load_style_minimal();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
         case 6: load_style_gruvbox();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
         case 7: load_style_gruvbox_light();  header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
+        case 8: load_style_gumby();          header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
         }
         return true;
     }
@@ -3212,5 +3303,68 @@ static void load_style_gruvbox_light()
     style.Colors[ImGuiCol_PlotHistogram]        = bg0;
     style.Colors[ImGuiCol_PlotHistogramHovered] = bg0;
     style.Colors[ImGuiCol_TextSelectedBg]       = yellow;
+	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.157f, 0.157f, 0.157f, 0.700f);
+}
+
+static void load_style_gumby()
+{
+    ImGuiStyle& style = ImGui::GetStyle();
+
+	ImVec4 bg0    = ImVec4(0.118f, 0.118f, 0.118f, 1.000f);
+	ImVec4 bg1    = ImVec4(0.050f, 0.050f, 0.050f, 1.000f);
+	ImVec4 bg2    = ImVec4(0.333f, 0.443f, 0.337f, 1.000f);
+	ImVec4 fg0    = ImVec4(0.502f, 0.878f, 0.478f, 1.000f);
+	ImVec4 fg1    = ImVec4(0.843f, 0.843f, 0.843f, 1.000f);
+	ImVec4 gray   = ImVec4(0.573f, 0.514f, 0.455f, 1.000f);
+	ImVec4 green  = ImVec4(0.161f, 0.612f, 0.220f, 1.000f);
+
+    style.Alpha          = 1.0;
+    style.WindowRounding = 3;
+    style.GrabRounding   = 1;
+    style.GrabMinSize    = 20;
+    style.FrameRounding  = 3;
+
+    style.Colors[ImGuiCol_Text]                 = fg0;
+    style.Colors[ImGuiCol_TextDisabled]         = gray;
+    style.Colors[ImGuiCol_WindowBg]             = bg1;
+    style.Colors[ImGuiCol_ChildWindowBg]        = bg1;
+	style.Colors[ImGuiCol_PopupBg]              = bg1;
+    style.Colors[ImGuiCol_Border]               = bg2;
+    style.Colors[ImGuiCol_BorderShadow]         = bg1;
+    style.Colors[ImGuiCol_FrameBg]              = bg0;
+    style.Colors[ImGuiCol_FrameBgHovered]       = gray;
+    style.Colors[ImGuiCol_FrameBgActive]        = bg1;
+    style.Colors[ImGuiCol_TitleBg]              = bg2;
+    style.Colors[ImGuiCol_TitleBgCollapsed]     = bg2;
+    style.Colors[ImGuiCol_TitleBgActive]        = bg2;
+    style.Colors[ImGuiCol_MenuBarBg]            = bg0;
+    style.Colors[ImGuiCol_ScrollbarBg]          = bg1;
+    style.Colors[ImGuiCol_ScrollbarGrab]        = gray;
+    style.Colors[ImGuiCol_ScrollbarGrabHovered] = green;
+    style.Colors[ImGuiCol_ScrollbarGrabActive]  = green;
+    style.Colors[ImGuiCol_ChildBg]              = bg0;
+    style.Colors[ImGuiCol_CheckMark]            = green;
+    style.Colors[ImGuiCol_SliderGrab]           = gray;
+    style.Colors[ImGuiCol_SliderGrabActive]     = green;
+    style.Colors[ImGuiCol_Button]               = bg2;
+    style.Colors[ImGuiCol_ButtonHovered]        = green;
+    style.Colors[ImGuiCol_ButtonActive]         = green;
+    style.Colors[ImGuiCol_Header]               = bg1;
+    style.Colors[ImGuiCol_HeaderHovered]        = green;
+    style.Colors[ImGuiCol_HeaderActive]         = green;
+    style.Colors[ImGuiCol_Column]               = bg0;
+    style.Colors[ImGuiCol_ColumnHovered]        = bg0;
+    style.Colors[ImGuiCol_ColumnActive]         = bg0;
+    style.Colors[ImGuiCol_ResizeGrip]           = fg0;
+    style.Colors[ImGuiCol_ResizeGripHovered]    = fg1;
+    style.Colors[ImGuiCol_ResizeGripActive]     = green;
+    style.Colors[ImGuiCol_CloseButton]          = green;
+    style.Colors[ImGuiCol_CloseButtonHovered]   = green;
+    style.Colors[ImGuiCol_CloseButtonActive]    = green;
+    style.Colors[ImGuiCol_PlotLines]            = bg0;
+    style.Colors[ImGuiCol_PlotLinesHovered]     = bg0;
+    style.Colors[ImGuiCol_PlotHistogram]        = bg0;
+    style.Colors[ImGuiCol_PlotHistogramHovered] = bg0;
+    style.Colors[ImGuiCol_TextSelectedBg]       = green;
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.157f, 0.157f, 0.157f, 0.700f);
 }

@@ -1,0 +1,1 @@
+@pscp -r attic\* czr@hedger:/srv/http/attic/

@@ -1,402 +1,438 @@
 ﻿  main.cpp
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(185): warning C4459: declaration of 'msg' hides global declaration
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(109): note: see declaration of 'msg'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(410): warning C4800: 'BOOL': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(579): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(611): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(352): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(186): warning C4459: declaration of 'msg' hides global declaration
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(110): note: see declaration of 'msg'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(362): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(415): warning C4800: 'BOOL': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(611): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(643): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(355): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(255): note: see declaration of 'strncat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(354): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(357): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(360): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(361): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(363): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(364): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(366): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(367): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(369): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(370): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(372): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(373): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(448): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(449): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(450): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(451): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(452): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(453): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(454): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(455): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(456): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(348): warning C4100: 'nshowcmd': unreferenced formal parameter
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(348): warning C4100: 'lpcmdline': unreferenced formal parameter
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(348): warning C4100: 'hprevinstance': unreferenced formal parameter
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(348): warning C4100: 'hinstance': unreferenced formal parameter
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(378): warning C4189: 'hCreateGuid': local variable is initialized but not referenced
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(645): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(646): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(700): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(649): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(789): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(806): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(815): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(816): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(865): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(866): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(869): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(915): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(917): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(918): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(934): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(936): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(945): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(957): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(958): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(961): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(967): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(968): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(980): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(981): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(993): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(994): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1006): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1007): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1019): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1020): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1032): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1033): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1034): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1046): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1047): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1057): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1067): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1068): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1071): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1096): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1097): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1098): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1119): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1179): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1184): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(365): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1185): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(366): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(368): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(369): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(371): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(372): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(374): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(375): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(377): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(378): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(435): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(447): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(450): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(453): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(456): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(477): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(478): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(479): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(480): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(481): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(482): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(483): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(484): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(485): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(351): warning C4100: 'nshowcmd': unreferenced formal parameter
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(351): warning C4100: 'lpcmdline': unreferenced formal parameter
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(351): warning C4100: 'hprevinstance': unreferenced formal parameter
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(351): warning C4100: 'hinstance': unreferenced formal parameter
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(383): warning C4189: 'hCreateGuid': local variable is initialized but not referenced
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(678): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(679): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(733): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(682): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(822): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(839): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(848): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(849): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(898): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(899): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(902): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(948): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(950): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(951): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(967): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(969): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(978): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(990): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(991): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(994): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1000): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1001): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1013): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1014): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1026): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1027): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1039): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1040): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1052): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1053): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1065): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1066): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1067): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1079): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1080): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1090): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1100): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1101): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1104): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1129): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1130): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1131): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1153): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1161): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1162): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(255): note: see declaration of 'strncat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1186): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1173): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1184): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1246): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1251): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1252): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(255): note: see declaration of 'strncat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1188): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1253): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(255): note: see declaration of 'strncat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1189): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1255): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(255): note: see declaration of 'strncat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1328): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1368): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1400): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1411): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1215): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1216): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1256): warning C4996: 'strncat': This function or variable may be unsafe. Consider using strncat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(255): note: see declaration of 'strncat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1395): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1435): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1467): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1478): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1282): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1283): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1217): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1284): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1221): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1221): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1224): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1288): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1288): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1291): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1322): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1389): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1333): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1400): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1338): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1405): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1343): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1410): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1348): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1415): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1353): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1420): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1358): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1425): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1370): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1437): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1422): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1422): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1423): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1423): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1424): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1424): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1425): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1425): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1426): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1426): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1427): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1427): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1428): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1428): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1429): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1429): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1430): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1430): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1435): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1435): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1436): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1436): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1439): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1439): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1476): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1489): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1489): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1490): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1490): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1491): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1491): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1492): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1492): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1493): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1493): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1494): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1494): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1495): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1495): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1496): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1496): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1497): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1497): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1502): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1502): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1503): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1503): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1506): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1506): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1543): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1474): warning C4100: 'directory_path': unreferenced formal parameter
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1517): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1541): warning C4100: 'directory_path': unreferenced formal parameter
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1584): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1526): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1526): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1527): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1527): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1528): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1528): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1529): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1529): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1530): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1530): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1531): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1531): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1532): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1532): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1533): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1533): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1534): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1534): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1535): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1535): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1540): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1540): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1541): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1541): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1543): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1543): note: consider using '%zd' in the format string
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1551): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1593): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1593): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1594): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1594): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1595): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1595): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1596): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1596): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1597): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1597): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1598): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1598): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1599): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1599): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1600): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1600): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1601): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1601): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1602): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1602): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1607): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1607): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1608): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1608): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1610): warning C4477: 'fprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::size_t'
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1610): note: consider using '%zd' in the format string
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1618): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1556): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1623): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1566): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1633): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1573): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1640): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1580): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1647): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1587): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1654): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1594): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1661): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1601): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1668): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1608): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1675): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1615): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1682): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1622): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1689): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1629): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1696): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1636): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1703): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1645): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1712): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1652): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1719): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1660): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1727): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1679): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1690): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1788): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1746): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1757): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1855): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1789): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1856): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1790): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1857): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1791): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1858): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1792): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1859): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1793): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1860): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(1794): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1861): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2104): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2144): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2015): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2171): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2211): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2082): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2098): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2165): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2109): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2176): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2114): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2181): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2119): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2186): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2124): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2191): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2129): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2196): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2134): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2201): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2146): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2213): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2174): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2241): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2180): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2201): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2190): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2209): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2247): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2216): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2268): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2257): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2268): warning C4244: 'initializing': conversion from 'int' to 'char', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2280): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2301): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2321): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2322): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2323): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2324): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2325): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2326): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2327): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2328): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2340): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2254): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2276): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2283): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2320): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2329): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2330): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2331): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2332): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2333): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2334): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2335): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2336): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2405): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2406): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2335): warning C4244: 'initializing': conversion from 'int' to 'char', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2347): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2368): warning C4244: '=': conversion from 'int' to 'char', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2388): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2389): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2390): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2391): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2392): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2393): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2394): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2395): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2407): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2321): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2387): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2396): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2397): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2398): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2399): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2400): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2401): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2402): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2403): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2472): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2473): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2407): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2474): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2408): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2475): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2409): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2476): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2410): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2477): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2411): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2478): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2420): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2421): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2486): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2487): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2422): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2488): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2448): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2449): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2489): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2450): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2490): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2455): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2470): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2499): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2500): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2501): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2527): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2528): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2529): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2534): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2549): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\time.h(505): note: see declaration of 'localtime'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2476): warning C4459: declaration of 'download_datetime' hides global declaration
-  c:\dev\git\notes_attic\src\gui\dx11\main.cpp(104): note: see declaration of 'download_datetime'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2482): warning C4189: 'current_datetime': local variable is initialized but not referenced
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2637): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2631): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2653): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2683): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2781): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2782): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2555): warning C4459: declaration of 'download_datetime' hides global declaration
+  c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(104): note: see declaration of 'download_datetime'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2561): warning C4189: 'current_datetime': local variable is initialized but not referenced
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2716): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2710): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2738): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2731): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2734): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2770): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2766): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2866): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2867): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2783): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2868): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2784): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2869): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2815): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2900): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2816): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2901): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2817): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2902): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2818): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2903): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\dev\git\notes_attic\include\dirent.h(458): warning C4505: '_wreaddir': unreferenced local function has been removed
-c:\dev\git\notes_attic\include\dirent.h(864): warning C4505: 'rewinddir': unreferenced local function has been removed
-c:\dev\git\notes_attic\include\dirent.h(875): warning C4505: 'scandir': unreferenced local function has been removed
-c:\dev\git\notes_attic\include\dirent.h(1021): warning C4505: 'versionsort': unreferenced local function has been removed
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2597): warning C4702: unreachable code
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2609): warning C4702: unreachable code
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2613): warning C4702: unreachable code
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2694): warning C4172: returning address of local variable or temporary: password
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2473): warning C4172: returning address of local variable or temporary: buf
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2671): warning C4172: returning address of local variable or temporary: encrypted_password
-c:\dev\git\notes_attic\src\gui\dx11\main.cpp(2644): warning C4172: returning address of local variable or temporary: key
-  notes_attic.vcxproj -> C:\dev\git\notes_attic\src\gui\dx11\Debug\notes_attic.exe
-  notes_attic.vcxproj -> C:\dev\git\notes_attic\src\gui\dx11\Debug\notes_attic.pdb (Full PDB)
+c:\dev\git\notes_attic_tray\include\dirent.h(458): warning C4505: '_wreaddir': unreferenced local function has been removed
+c:\dev\git\notes_attic_tray\include\dirent.h(864): warning C4505: 'rewinddir': unreferenced local function has been removed
+c:\dev\git\notes_attic_tray\include\dirent.h(875): warning C4505: 'scandir': unreferenced local function has been removed
+c:\dev\git\notes_attic_tray\include\dirent.h(1021): warning C4505: 'versionsort': unreferenced local function has been removed
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2676): warning C4702: unreachable code
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2688): warning C4702: unreachable code
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2692): warning C4702: unreachable code
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2779): warning C4172: returning address of local variable or temporary: password
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2552): warning C4172: returning address of local variable or temporary: buf
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2757): warning C4172: returning address of local variable or temporary: encrypted_pass
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(2725): warning C4172: returning address of local variable or temporary: key
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1164): warning C4172: returning address of local variable or temporary: full_path
+c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1186): warning C4172: returning address of local variable or temporary: just_dir
+  notes_attic.vcxproj -> C:\dev\git\notes_attic_tray\src\gui\dx11\Debug\notes_attic.exe
+  notes_attic.vcxproj -> C:\dev\git\notes_attic_tray\src\gui\dx11\Debug\notes_attic.pdb (Full PDB)
