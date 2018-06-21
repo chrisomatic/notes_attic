@@ -8,6 +8,7 @@
 #define FIELD_KEY_MAX 100
 #define FIELD_VAL_MAX 10000
 #define FIELD_BODY_MAX 100000
+#define HIGHLIGHTED_INDICIES_MAX 32
 #define BIN_LENGTH 32
 
 #include <imgui\imgui.h>
@@ -34,7 +35,8 @@ typedef enum
     SUBJECT,
     CC,
     FORWARDED,
-    BODY
+    BODY,
+    ALL
 } EmailHeaderField;
 
 #include "quicksort.h"
@@ -67,9 +69,17 @@ static char filter_forwarded[FIELD_VAL_MAX] = {0};
 static char filter_subject[FIELD_VAL_MAX] = {0};
 static char filter_body[FIELD_VAL_MAX] = {0};
 
+static char hex_forecolor[9];
+static char hex_highlight[9];
+static bool display_timer = false;
+static char test_password_result[10] = {0};
+static int  test_password_display_timer = 0;
+
 static bool only_attachments = false;
 static bool orient_right = false;
+static bool search_highlighting = true;
 static bool is_automatic_downloading_enabled = false;
+static bool is_header_open = false;
 static const char* dow_items[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 static int  automatic_downloading_freq = 1;
 static int  automatic_downloading_pref_day = 1;
@@ -103,6 +113,12 @@ static char notes_password[100] = {0};
 static char config_path[MAX_PATH];
 static char* download_datetime;
 static char* get_app_directory();
+
+struct HighlightedIndex
+{
+    int start_index;
+    int end_index;
+};
 
 static HMENU hmenu;
 static GUID guid;
@@ -275,6 +291,7 @@ static const char* default_img_path  = "C:\\Windows\\system32\\rundll32.exe \"C:
 static const char* default_misc_path = "C:\\Windows\\system32\\notepad.exe";
 
 static const char* default_export_program_path = "exportnotes.exe";
+static char* new_body = NULL;
 
 static char cache_file_path[MAX_PATH];
 static char cache_file_path_temp[MAX_PATH];
@@ -298,6 +315,8 @@ typedef struct
 	char** attachments;
     char** attachments_ext;
 	int   attachment_count;
+    HighlightedIndex highlighted_indicies[HIGHLIGHTED_INDICIES_MAX];
+    int num_highlighted_indicies;
 } NotesEmail;
 
 static NotesEmail emails[MAX_EMAILS];
@@ -324,7 +343,9 @@ static void store_config();
 static void load_pass();
 static void store_pass();
 static void clear_email_memory();
+static bool test_password(const char* pass);
 static bool str_contains(char* base, char* search_pattern,bool case_sensitive);
+static bool str_contains_get_indicies(char* base, char* search_pattern,bool case_sensitive, NotesEmail *email);
 static int str_replace(char* base, char* search_pattern, char* replacement, char* ret_string);
 static bool str_startswith(char* base, char* search_pattern);
 static void str_tolower(char *str);
@@ -340,6 +361,7 @@ static void load_style_gruvbox_light();
 static void load_style_gumby();
 static void draw_filters_email_list(int x);
 static void draw_header_body_attachments(int x);
+static void convert_vec4_to_hexstring(ImVec4 v, char* hexstring);
 static char* get_current_datetime(struct tm &tstruct);
 static void get_next_download_datetime(char* download_datetime);
 static bool time_to_download();
@@ -352,6 +374,16 @@ static char* decrypt_password(char* encrypted_password);
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int nshowcmd)
 //int main(int, char**)
 {
+    // check to see if application is already running, and if so open that one
+    HWND test_hwnd = FindWindow(_T("Notes Attic"),_T("Notes Attic"));
+
+    if(test_hwnd != NULL)
+    {
+        ShowWindow(test_hwnd,SW_NORMAL);
+        return 1;
+    }
+    // ...
+    
     if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, (LPSTR)config_path)))
 		strncat(config_path, "\\AppData\\Local\\Attic\\",22);
 	else
@@ -511,6 +543,9 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	style.WindowRounding = 0;
 	style.FrameRounding = 3;
 
+    convert_vec4_to_hexstring(style.Colors[ImGuiCol_Text],hex_forecolor);
+    strcpy(hex_highlight,"FF00FFFF");
+
     // try to load cache file
     if(!load_cache())
         write_direct_to_cache(root_dir);
@@ -538,13 +573,6 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
             continue;
         }
 
-		if (IsIconic(hwnd) || !IsWindowVisible(hwnd))
-		{
-			// reduce cpu usage when minimized
-			Sleep(1);
-			continue;
-		}
-
         if(cache_is_updated)
         {
             cache_is_updated = false;
@@ -560,6 +588,13 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
             apply_filters();
             apply_sorting();
         }
+
+		if (IsIconic(hwnd) || !IsWindowVisible(hwnd))
+		{
+			// reduce cpu usage when minimized
+			Sleep(1);
+			continue;
+		}
 
         ImGui_ImplDX11_NewFrame();
 
@@ -586,6 +621,44 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 				curr_email.attachment_count = e.attachment_count;
                 curr_email.body = e.body;
 
+                if(search_highlighting)
+                {
+                    if (e.num_highlighted_indicies > 0)
+                    {
+                        int new_body_size = strlen(e.body) + 20 * (e.num_highlighted_indicies) + 11;
+
+                        if (new_body != NULL) { free(new_body);}
+                        new_body = (char*)calloc(new_body_size, sizeof(char));
+                        char* b = new_body;
+
+                        int prev_index = 0;
+                        for (int h = 0; h < e.num_highlighted_indicies; ++h)
+                        {
+                            // print any text before first highlighted word
+                            sprintf(b, "$$%s%.*s", hex_forecolor, e.highlighted_indicies[h].start_index - prev_index, e.body + prev_index);
+                            b += (e.highlighted_indicies[h].start_index - prev_index + 10);
+
+                            char* beg = e.body + e.highlighted_indicies[h].start_index;
+                            int pattern_length = e.highlighted_indicies[h].end_index - e.highlighted_indicies[h].start_index;
+
+                            // print highlighted word
+                            sprintf(b, "$$%s%.*s", hex_highlight, pattern_length, beg);
+                            b += (10 + pattern_length);
+
+                            prev_index = e.highlighted_indicies[h].end_index;
+
+                            if (h == e.num_highlighted_indicies - 1)
+                            {
+                                // append rest of string at end
+                                char* end = e.body + e.highlighted_indicies[h].end_index;
+                                sprintf(b, "$$%s%s", hex_forecolor, end);
+
+                                curr_email.body = new_body;
+                            }
+                        }
+                    }
+                }
+                
 				prev_selected_email_index = selected_email_index;
 			}
 		}
@@ -674,6 +747,44 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
     return 0;
 }
 
+static void convert_vec4_to_hexstring(ImVec4 v, char* hexstring)
+{
+    // x, y, z, w
+    // float [0.0, 1.0]
+    // XXYYZZWW [0->F]
+
+    int x = v.x*255; // 0 - 255
+    int y = v.y*255; // 0 - 255
+    int z = v.z*255; // 0 - 255
+    int w = v.w*255; // 0 - 255
+
+    int a[] = {x,y,z,w};
+    int index = 0;
+
+    for(int i = 0; i < 4; ++i)
+    {
+        int i0 = 0;
+        while(a[i] >= 16)
+        {
+            a[i] -= 16;
+            ++i0;
+        }
+
+        char c0 = 48 + i0;
+        c0 = (c0 >= 58) ? c0 + 7 : c0; // translate 10-15 -> A-F
+
+        char c1 = 48 + a[i];
+        c1 = (c1 >= 58) ? c1 + 7 : c1; // translate 10-15 -> A-F
+
+        hexstring[0+i*2] = c0;
+        hexstring[1+i*2] = c1;
+    }
+
+    hexstring[9] = '\0';
+
+    return;
+}
+
 static void draw_filters_email_list(int x)
 {
     // get window size
@@ -685,66 +796,73 @@ static void draw_filters_email_list(int x)
 
     ImGui::Begin(email_title, 0,window_flags);
 
-    int list_height_sub = 116;
+    int list_height_sub = 144;
 
-    if (ImGui::CollapsingHeader("Filters",ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        ImGui::PushItemWidth(-70);
-        ImGui::InputText("To",filter_to,FIELD_VAL_MAX);
-        ImGui::InputText("From",filter_from,FIELD_VAL_MAX);
-        ImGui::InputText("Date", filter_date, FIELD_VAL_MAX);
-        ImGui::InputText("Subject",filter_subject,FIELD_VAL_MAX);
-        ImGui::InputText("Body",filter_body,FIELD_VAL_MAX);
-        ImGui::PopItemWidth();
-        ImGui::Checkbox("Only Attachments",&only_attachments); ImGui::SameLine();
+	if (ImGui::CollapsingHeader("Advanced Search", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PushItemWidth(-70);
+		ImGui::InputText("To", filter_to, FIELD_VAL_MAX);
+		ImGui::InputText("From", filter_from, FIELD_VAL_MAX);
+		ImGui::InputText("Date", filter_date, FIELD_VAL_MAX);
+		ImGui::InputText("Subject", filter_subject, FIELD_VAL_MAX);
+		ImGui::InputText("Body", filter_body, FIELD_VAL_MAX);
+		ImGui::PopItemWidth();
+		
+		list_height_sub += 130;
+	}
 
-        ImGui::PushAllowKeyboardFocus(false);
-        if(ImGui::Button("Apply Filters"))
-        {
-            apply_filters();
-            apply_sorting();
-        }
+	ImGui::Spacing();
 
-        ImGui::SameLine();
-        if(ImGui::Button("Clear Filters"))
-        {
-            memset(filter_to,0,FIELD_VAL_MAX);
-            memset(filter_cc,0,FIELD_VAL_MAX);
-            memset(filter_from,0,FIELD_VAL_MAX);
-            memset(filter_forwarded,0,FIELD_VAL_MAX);
-            memset(filter_date,0,FIELD_VAL_MAX);
-            memset(filter_subject,0,FIELD_VAL_MAX);
-            memset(filter_body,0,FIELD_VAL_MAX);
-            only_attachments = false;
+	ImGui::PushItemWidth(-116);
+	ImGui::InputText("##Search", filter_all, FIELD_VAL_MAX); ImGui::SameLine();
+	ImGui::PopItemWidth();
 
-            apply_filters();
-            apply_sorting();
-        }
-        list_height_sub += 156;
-        ImGui::PopAllowKeyboardFocus();
-    }
+	ImGui::PushAllowKeyboardFocus(false);
+	if (ImGui::Button("Search", ImVec2(52, 22)))
+	{
+		apply_filters();
+		apply_sorting();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Clear", ImVec2(52, 22)))
+	{
+		memset(filter_to, 0, FIELD_VAL_MAX);
+		memset(filter_cc, 0, FIELD_VAL_MAX);
+		memset(filter_from, 0, FIELD_VAL_MAX);
+		memset(filter_forwarded, 0, FIELD_VAL_MAX);
+		memset(filter_date, 0, FIELD_VAL_MAX);
+		memset(filter_subject, 0, FIELD_VAL_MAX);
+		memset(filter_body, 0, FIELD_VAL_MAX);
+		memset(filter_all, 0, FIELD_VAL_MAX);
+		only_attachments = false;
 
-    ImGui::Spacing();
+		apply_filters();
+		apply_sorting();
+	}
 
-    ImGui::PushItemWidth(60);
-    if(ImGui::Combo("Dir", &sort_dir, "Asc\0Desc"))
-        apply_sorting();
-    ImGui::PopItemWidth();
-    ImGui::SameLine();
+	ImGui::PopAllowKeyboardFocus();
 
-    ImGui::PushItemWidth(emails_window_width-140 - 60);
-    if(ImGui::Combo("Sort Field", &sort_field, "Date\0To\0From\0Subject\0CC\0Forwarded"))
-        apply_sorting();
-    ImGui::PopItemWidth();
+	ImGui::Spacing();
 
-    ImGui::TextColored(ImVec4(0.4f, 0.4f,0.4f,1.0f),"%d/%d", selected_email_index + 1, num_emails_filtered); ImGui::SameLine(100);
-    ImGui::TextColored(ImVec4(0.4f, 0.4f, 0.4f, 1.0f), "[%3.0f%%]", 100.0f*(selected_email_index + 1) / (float)num_emails_filtered);
-    if(num_emails_filtered != num_emails)
-    {
-        ImGui::SameLine(200);
-        ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.6f, 1.0f), "(filters on)");
-    }
+	ImGui::Checkbox("Only Attachments", &only_attachments);
 	
+	ImGui::SameLine(173);
+	ImGui::Text("Sort");
+
+	ImGui::SameLine();
+    
+    ImGui::PushItemWidth(emails_window_width-140 - 150);
+	if(ImGui::Combo("##Sort Field", &sort_field, "Date\0To\0From\0Subject\0CC\0Forwarded"))
+        apply_sorting();
+    ImGui::PopItemWidth();
+
+	ImGui::SameLine();
+
+	ImGui::PushItemWidth(60);
+	if (ImGui::Combo("##Dir", &sort_dir, "Asc\0Desc"))
+		apply_sorting();
+	ImGui::PopItemWidth();
+
     ImGui::BeginChild(ImGui::GetID((void*)(intptr_t)0), ImVec2(ImGui::GetWindowWidth() - 28, ImGui::GetWindowHeight() -list_height_sub), true);
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -829,9 +947,6 @@ static void draw_filters_email_list(int x)
                 ImGui::Text(" ");
 
             ImGui::SameLine(25);
-            
-            //if(set_scroll_here && selected_email_index == i)
-            //	ImGui::SetScrollHere();
 
             if (ImGui::Selectable(id, (selected_email_index == i), 0, ImVec2(ImGui::GetWindowWidth(), 50)))
             {
@@ -890,6 +1005,14 @@ static void draw_filters_email_list(int x)
     }
 
     ImGui::EndChild();
+
+    ImGui::TextColored(ImVec4(0.4f, 0.4f,0.4f,1.0f),"%d/%d", selected_email_index + 1, num_emails_filtered); ImGui::SameLine(100);
+    ImGui::TextColored(ImVec4(0.4f, 0.4f, 0.4f, 1.0f), "[%3.0f%%]", 100.0f*(selected_email_index + 1) / (float)num_emails_filtered);
+    if(num_emails_filtered != num_emails)
+    {
+        ImGui::SameLine(200);
+        ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.6f, 1.0f), "(filters on)");
+    }
 
     ImGui::End();
 
@@ -1843,11 +1966,17 @@ static void apply_filters()
     char compare[500000] = {0};
     char filter[1000] = {0};
 
+
     for(int i = 0; i < num_emails; ++i)
     {
         bool match = true;
 
-        for(int j = 0; j < 7; ++j)
+        // reset highlights
+        emails[i].num_highlighted_indicies = 0;
+
+        bool indicies_gathered = false;
+
+        for(int j = 0; j < 8; ++j)
         {
             memset(compare, 0, 500000);
             memset(filter,  0, 1000);
@@ -1861,38 +1990,61 @@ static void apply_filters()
                 case CC: strncpy(filter,filter_cc,strlen(filter_cc)); strncpy(compare,emails[i].cc,strlen(emails[i].cc)); break;
                 case FORWARDED: strncpy(filter,filter_forwarded,strlen(filter_forwarded)); strncpy(compare,emails[i].forwarded,strlen(emails[i].forwarded)); break;
                 case BODY: strncpy(filter,filter_body,strlen(filter_body)); strncpy(compare,emails[i].body,strlen(emails[i].body)); break;
+                case ALL: strncpy(filter,filter_all,strlen(filter_all)); 
+                          strncpy(compare,emails[i].body,strlen(emails[i].body));
+                          strncat(compare,emails[i].date,strlen(emails[i].date));
+                          strncat(compare,emails[i].to,strlen(emails[i].to));
+                          strncat(compare,emails[i].from,strlen(emails[i].from));
+                          strncat(compare,emails[i].subject,strlen(emails[i].subject));
+                          strncat(compare,emails[i].cc,strlen(emails[i].cc));
+                          strncat(compare,emails[i].forwarded,strlen(emails[i].forwarded));
+                  break;
             }
 
-            if ((!str_contains(compare, filter,false) && strcmp(filter, "") != 0) || (only_attachments && emails[i].attachment_count <= 0))
-            {
-                match = false;
-                break;
-            }
-        }
+			if (!indicies_gathered && (j == BODY || j == ALL))
+			{
+				bool contains_filter = str_contains_get_indicies(compare, filter, false, &emails[i]);
+				if ((!contains_filter && strcmp(filter, "") != 0) || (only_attachments && emails[i].attachment_count <= 0))
+				{
+					match = false;
+					break;
+				}
+                else if (contains_filter)
+                    indicies_gathered = true;
+			}
+			else
+			{
+if ((!str_contains(compare, filter, false) && strcmp(filter, "") != 0) || (only_attachments && emails[i].attachment_count <= 0))
+{
+	match = false;
+	break;
+}
+			}
+
+		}
 
 		if (match)
-        {
-            filtered_indicies[num_emails_filtered++] = i;
-        }
-    }
-
+		{
+			filtered_indicies[num_emails_filtered++] = i;
+		}
+	}
 }
 
 static char* str_getext(const char* file_path)
 {
-    char* p = (char*)file_path;
+	char* p = (char*)file_path;
 
-    // go to end of c-string
-    int path_length = 0;
-    while(*p)
-    {
-        ++path_length;
-        ++p;
-    }
+	// go to end of c-string
+	int path_length = 0;
+	while (*p)
+	{
+		++path_length;
+		++p;
+	}
 
 	// work backwards to find first occurrence of '.'
 	int dot_index = -1;
-	for (int i = path_length -1; i >= 0; --i)
+	for (int i = path_length - 1; i >= 0; --i)
 	{
 		if (file_path[i] == '.')
 		{
@@ -1900,59 +2052,143 @@ static char* str_getext(const char* file_path)
 			break;
 		}
 	}
-	
-    int ext_length;
+
+	int ext_length;
 
 	if (dot_index == -1)
 		ext_length = 0;
-    else
-	    ext_length = path_length - dot_index - 1;
+	else
+		ext_length = path_length - dot_index - 1;
 
 	char* return_ext = (char*)calloc(ext_length + 1, sizeof(char));
 
-    if(dot_index == -1)
-        return_ext[0] = 0;
-    else
-    {
-        int curr_ext_length = 0;
-        for(int i = dot_index + 1; i < path_length; ++i)
-            return_ext[curr_ext_length++] = file_path[i];
-    }
+	if (dot_index == -1)
+		return_ext[0] = 0;
+	else
+	{
+		int curr_ext_length = 0;
+		for (int i = dot_index + 1; i < path_length; ++i)
+			return_ext[curr_ext_length++] = file_path[i];
+	}
 
 	return return_ext;
 }
 
 static void str_tolower(char *str)
 {
-    while(*str != '\0')
-    {
-        if(*str >=65 && *str<=90)
-            *str = *str + 32;
-        str++;
-    }
+	while (*str != '\0')
+	{
+		if (*str >= 65 && *str <= 90)
+			*str = *str + 32;
+		str++;
+	}
 }
 
 static bool str_startswith(char* base, char* search_pattern)
 {
-	if (strcmp(search_pattern,"") == 0)
+	if (strcmp(search_pattern, "") == 0)
+		return false;
+
+	char* b_p = base;
+	char* p_p = search_pattern;
+
+	while (*p_p)
+	{
+		if (*b_p == NULL)
+			return false;
+
+		if (*p_p != *b_p)
+			return false;
+
+		++p_p;
+		++b_p;
+	}
+
+	return true;
+}
+
+static bool str_contains_get_indicies(char* base, char* search_pattern, bool case_sensitive, NotesEmail *email)
+{
+	if (strcmp(search_pattern, "") == 0)
 		return false;
 
     char* b_p = base;
     char* p_p = search_pattern;
 
-    while(*p_p)
+    char  b,p,bb,pp;
+
+    bool at_least_one_match = false;
+    int index = 0;
+    int body_length = strlen(email->body);
+
+    while(*b_p)
     {
-        if(*b_p == NULL)
-            return false;
+        b = *b_p;
+        p = *p_p;
 
-        if(*p_p != *b_p)
-            return false;
+        if(!case_sensitive)
+        {
+            // turn characters into lower-case if needed
+            if(b >= 65 && b <= 90)
+                b += 32;
 
-        ++p_p;
+            if(p >= 65 && p <= 90)
+                p += 32;
+        }
+
+        if(b == p)
+        {
+            char* bb_p = b_p;
+            bool match = true;
+            int pattern_length = 0;
+
+            while(*p_p)
+            {
+                bb = *bb_p;
+                pp = *p_p;
+
+                if(!case_sensitive)
+                {
+                    // turn characters into lower-case if needed
+                    if(bb >= 65 && bb <= 90)
+                        bb += 32;
+
+                    if(pp >= 65 && pp <= 90)
+                        pp += 32;
+                }
+
+                if(bb != pp)
+                    match = false;
+                
+                ++p_p;
+                ++bb_p;
+                ++pattern_length;
+            }
+
+            p_p = search_pattern;
+
+            if(match)
+            {
+                at_least_one_match = true;
+                if(index < body_length - 1)
+                {
+                    if(email->num_highlighted_indicies < HIGHLIGHTED_INDICIES_MAX - 1)
+                    {
+                        email->highlighted_indicies[email->num_highlighted_indicies].start_index = index;
+                        email->highlighted_indicies[email->num_highlighted_indicies].end_index   = index+pattern_length;
+                        email->num_highlighted_indicies++;
+                    }
+                }
+            }
+        }
+
         ++b_p;
+        ++index;
+
     }
 
-    return true;
+    return at_least_one_match;
+
 }
 
 static bool str_contains(char* base, char* search_pattern,bool case_sensitive = true)
@@ -2305,6 +2541,7 @@ static void store_config()
 	fprintf(fp,"export_program_path: %s\n",export_program_path);
     fprintf(fp,"emails_window_width: %d\n",emails_window_width);
     fprintf(fp,"orient_right: %d\n", orient_right);
+    fprintf(fp,"search_highlighting: %d\n", search_highlighting);
 	fprintf(fp,"selected_style_index: %d\n", selected_style_index);
 	fprintf(fp,"selected_font_index: %d\n", selected_font_index);
 	fprintf(fp,"downloading_enabled: %d\n", is_automatic_downloading_enabled);
@@ -2388,6 +2625,7 @@ static void load_config()
 
                 if(strcmp(key,"root_dir")  == 0) {strncpy(root_dir,val,strlen(val));}
                 else if(strcmp(key,"orient_right")  == 0) {iVal = atoi(val); orient_right = iVal;}
+                else if(strcmp(key,"search_highlighting")  == 0) {iVal = atoi(val); search_highlighting = iVal;}
                 else if(strcmp(key,"xls_override")  == 0) {iVal = atoi(val); xls_override = iVal;}
                 else if(strcmp(key,"doc_override")  == 0) {iVal = atoi(val); doc_override = iVal;}
                 else if(strcmp(key,"csv_override")  == 0) {iVal = atoi(val); csv_override = iVal;}
@@ -2465,6 +2703,18 @@ static void delete_email(int index)
 {
     num_emails--;
     emails[index] = emails[num_emails];
+}
+static bool test_password(const char* pass)
+{
+    char command[260] = {0};
+
+    strncpy(command,export_program_path,strlen(export_program_path));
+    strcat(command," -t ");
+    strcat(command,pass);
+
+    int result = start_process(command,false, false);
+
+    return (result == 0);
 }
 
 static void export_emails_with_pass_background(bool show, bool wait, const char* pass)
@@ -2751,7 +3001,7 @@ static char* encrypt_password(char* password)
 		}
 
 		OutputDebugStringA(encrypted_pass);
-		OutputDebugStringA("\n");
+
     }
 
     encrypted_pass[BIN_LENGTH] = '\0';
@@ -2809,7 +3059,6 @@ static void download_emails_and_refresh()
                 write_direct_to_cache(root_dir);
                 get_next_download_datetime(download_datetime);
             }
-
         }
         Sleep(200);
     }
@@ -2835,6 +3084,10 @@ static void display_main_menu()
             ImGui::Separator();
 			ImGui::DragInt("Email List Width (px)", &emails_window_width, 1);
 			ImGui::Checkbox("Orient Right",&orient_right);
+			if(ImGui::Checkbox("Search Highlighting",&search_highlighting))
+            {
+                prev_selected_email_index = -1;
+            }
 			ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Theme"))
@@ -2908,17 +3161,33 @@ static void display_main_menu()
 					ImGui::Text(pref_label);
                     ImGui::Separator();
 
-                    ImGui::InputText("Notes Password", notes_password, 100,pass_flags); 
+                    ImGui::InputText("Notes Password", notes_password, 100,ImGuiInputTextFlags_Password | ImGuiInputTextFlags_CharsNoBlank);
                     ImGui::SameLine();
-                    ImGui::Text("(<o>)");
-                    if (ImGui::IsItemActive() || ImGui::IsItemHovered())
-                        pass_flags = 0;
-                    else
-                        pass_flags = ImGuiInputTextFlags_Password | ImGuiInputTextFlags_CharsNoBlank;
+                    if(ImGui::Button("Test"))
+                    {
+                        if(test_password(notes_password)) {
+                            display_timer = true;
+                            test_password_display_timer = 180;
+                            strcpy(test_password_result,"It works!");
+                        } else {
+                            display_timer = true;
+                            test_password_display_timer = 180;
+                            strcpy(test_password_result,"It failed :(");
+                        }
+                    }
+
+                    if(display_timer)
+                    {
+                        ImGui::Text(test_password_result);
+                        --test_password_display_timer;
+
+                        if(test_password_display_timer <= 0)
+                            display_timer = false;
+                    }
 
                     ImGui::Text("*A password is required for automatic downloading.\nThis password will be encrypted and stored in your\nlocal user folder.");
             
-                    // @CLEANUP: Should only do this when a propery has changed instead of every frame
+                    // @CLEANUP: Should only do this when a property has changed instead of every frame
                     get_next_download_datetime(download_datetime);
                 }
                
@@ -2982,6 +3251,11 @@ static bool show_style_selector(const char* label)
         case 7: load_style_gruvbox_light();  header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
         case 8: load_style_gumby();          header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
         }
+        
+        ImGuiStyle * style = &ImGui::GetStyle();
+        convert_vec4_to_hexstring(style->Colors[ImGuiCol_Text],hex_forecolor);
+        strcpy(hex_highlight,"FF00FFFF");
+		prev_selected_email_index = -1;
         return true;
     }
     return false;

@@ -22,4 +22,3 @@ C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\exportnotes.pdb
 C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\exportnotes.exe
 C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\exportnotes.pdb
 C:\dev\git\notes_attic_tray\src\exportnotes\bin\Release\Interop.Domino.dll
-C:\dev\git\notes_attic_tray\src\exportnotes\obj\Release\exportnotes.csprojResolveAssemblyReference.cache

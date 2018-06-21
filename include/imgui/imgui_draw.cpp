@@ -2436,6 +2436,38 @@ ImVec2 ImFont::CalcTextSizeA(float size, float max_width, float wrap_width, cons
     return text_size;
 }
 
+static const int kMaxChar = 262144;
+static char char_buf[kMaxChar];
+static ImU32 col_buf[kMaxChar]; 
+
+bool ParseColor(const char* s, ImU32 *col) {
+    *col = 0;
+    if(s[0] != '$' || s[1] != '$') {
+        return false;
+    } else {
+        for(int i=0; i<8; ++i){
+            *col *= 16;
+            char c = s[i+2];
+            if(c>='0' && c<='9'){
+                *col += c - '0';
+            } else if(c>='A' && c<='F'){
+                *col += c - 'A' + 10;
+            } else if(c>='a' && c<='f'){
+                *col += c - 'a' + 10;
+            } else {
+                return false;
+            }
+        }
+        ImU32 flip_col = 0;
+        for(int i=0; i<4; ++i){
+            flip_col <<= 8;
+            flip_col += (*col >> 8*i) & 0x000000FF;
+        }
+        *col = flip_col;
+        return true;
+    }
+}
+
 void ImFont::RenderChar(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col, unsigned short c) const
 {
     if (c == ' ' || c == '\t' || c == '\n' || c == '\r') // Match behavior of RenderText(), those 4 codepoints are hard-coded.
@@ -2454,6 +2486,26 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col
 {
     if (!text_end)
         text_end = text_begin + strlen(text_begin); // ImGui functions generally already provides a valid text_end, so this is merely to handle direct calls.
+
+    {
+        int index = 0;
+        int chain = 0;
+        const char* s = text_begin;
+        ImU32 temp_col;
+        while (s < text_end){
+            if(s < text_end - 10 && ParseColor(s, &temp_col)){
+                col = temp_col;
+                s += 10;
+            } else {
+                char_buf[index] = *s;
+                col_buf[index] = col;
+                ++index;
+                ++s;
+            }
+        }
+        text_begin = &char_buf[0];
+        text_end = &char_buf[index];
+    }
 
     // Align to be pixel perfect
     pos.x = (float)(int)pos.x + DisplayOffset.x;
@@ -2595,13 +2647,14 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col
                     }
 
                     // We are NOT calling PrimRectUV() here because non-inlined causes too much overhead in a debug builds. Inlined here:
+					ImU32 temp_col = col_buf[s - text_begin - 1];
                     {
                         idx_write[0] = (ImDrawIdx)(vtx_current_idx); idx_write[1] = (ImDrawIdx)(vtx_current_idx+1); idx_write[2] = (ImDrawIdx)(vtx_current_idx+2);
                         idx_write[3] = (ImDrawIdx)(vtx_current_idx); idx_write[4] = (ImDrawIdx)(vtx_current_idx+2); idx_write[5] = (ImDrawIdx)(vtx_current_idx+3);
-                        vtx_write[0].pos.x = x1; vtx_write[0].pos.y = y1; vtx_write[0].col = col; vtx_write[0].uv.x = u1; vtx_write[0].uv.y = v1;
-                        vtx_write[1].pos.x = x2; vtx_write[1].pos.y = y1; vtx_write[1].col = col; vtx_write[1].uv.x = u2; vtx_write[1].uv.y = v1;
-                        vtx_write[2].pos.x = x2; vtx_write[2].pos.y = y2; vtx_write[2].col = col; vtx_write[2].uv.x = u2; vtx_write[2].uv.y = v2;
-                        vtx_write[3].pos.x = x1; vtx_write[3].pos.y = y2; vtx_write[3].col = col; vtx_write[3].uv.x = u1; vtx_write[3].uv.y = v2;
+                        vtx_write[0].pos.x = x1; vtx_write[0].pos.y = y1; vtx_write[0].col = temp_col; vtx_write[0].uv.x = u1; vtx_write[0].uv.y = v1;
+                        vtx_write[1].pos.x = x2; vtx_write[1].pos.y = y1; vtx_write[1].col = temp_col; vtx_write[1].uv.x = u2; vtx_write[1].uv.y = v1;
+                        vtx_write[2].pos.x = x2; vtx_write[2].pos.y = y2; vtx_write[2].col = temp_col; vtx_write[2].uv.x = u2; vtx_write[2].uv.y = v2;
+                        vtx_write[3].pos.x = x1; vtx_write[3].pos.y = y2; vtx_write[3].col = temp_col; vtx_write[3].uv.x = u1; vtx_write[3].uv.y = v2;
                         vtx_write += 4;
                         vtx_current_idx += 4;
                         idx_write += 6;

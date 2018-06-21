@@ -21,3 +21,7 @@ C:\dev\git\notes_attic_tray\src\exportnotes\obj\Debug\Interop.Domino.dll
 C:\dev\git\notes_attic_tray\src\exportnotes\obj\Debug\exportnotes.csproj.ResolveComReference.cache
 C:\dev\git\notes_attic_tray\src\exportnotes\obj\Debug\exportnotes.exe
 C:\dev\git\notes_attic_tray\src\exportnotes\obj\Debug\exportnotes.pdb
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Debug\exportnotes.exe
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Debug\exportnotes.pdb
+C:\dev\git\notes_attic_tray\src\exportnotes\bin\Debug\Interop.Domino.dll
+C:\dev\git\notes_attic_tray\src\exportnotes\obj\Debug\exportnotes.csprojResolveAssemblyReference.cache

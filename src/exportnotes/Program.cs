@@ -41,6 +41,7 @@ namespace exportnotes
         static string     export_dir;
         static bool       quiet;
         static bool       background;
+        static bool       test_mode;
         
         static int orig_row;
         static int orig_col;
@@ -51,7 +52,7 @@ namespace exportnotes
             wrl("Exports all of your Lotus Notes Emails and Attachments to a specified location. Useful for backing up emails if you are running out of space, or just want a convenient way to look back at them.");
             wrl();
             wrl("Usage:");
-            wrl(" exportnotes <export_directory> [-s server -p password -q -?]");
+            wrl(" exportnotes <export_directory> [-s server -p password -q -f nsf_file_name -b] [-?] [-t password]");
             wrl();
             wrl("Options:");
             wrl();
@@ -60,6 +61,7 @@ namespace exportnotes
             wrl(" -q: Quiet. Suppress all unnecessary output from program.");
             wrl(" -f: Specify the .nsf file that will override the default assumed name (no need to include extension). e.g -f john_doe2");
             wrl(" -b: Background. Adds some delay so CPU % isn't greedy while it exports.");
+            wrl(" -t: Test password to see if it will work. Return 0 if success, otherwise 1");
             wrl(" -?: Show this help display.");
             wrl();
             wrl("Examples:");
@@ -74,8 +76,9 @@ namespace exportnotes
 #if (DEBUG)
             //args = new string[] { };
             args = new string[] { "C:\\email_archive_test"};
+            args = new string[] { "-t", "somepass" };
 #endif
-            
+
             // initialization
             Console.TreatControlCAsInput = true;
 
@@ -85,6 +88,7 @@ namespace exportnotes
             specified_nsf = "";
             quiet  = false;
             background = false;
+            test_mode = false;
             curr_document = 0;
 
             // handle commandline args
@@ -134,6 +138,14 @@ namespace exportnotes
                                 ++i;
                             }
                             break;
+                        case 't':
+                            if (args.Length > i + 1)
+                            {
+                                test_mode = true;
+                                pass = args[i + 1];
+                                ++i;
+                            }
+                            break;
                         case 'q':
                             quiet = true;
                             break;
@@ -149,15 +161,29 @@ namespace exportnotes
                 }
             }
 
+
+            session = new NotesSessionClass();
+
+            if(test_mode)
+            {
+                try
+                {
+                    session.Initialize(pass);
+                    return 0;
+                }
+                catch
+                {
+                    return 1;
+                }
+            }
+            
             // validation
             if(export_dir == "")
             {
                 wrl_error("\nPlease specify an export directory. Run \"exportnotes -?\" for help");
                 return 1;
             }
-
-            session = new NotesSessionClass();
-
+            
             // get password from user if it wasn't specified
             if(pass == "")
             {

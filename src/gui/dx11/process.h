@@ -1,4 +1,4 @@
-static void start_process(char* command,bool show_window = false, bool wait = false)
+static int start_process(char* command,bool show_window = false, bool wait = false)
 {
 
     STARTUPINFOA si = {0};
@@ -28,8 +28,8 @@ static void start_process(char* command,bool show_window = false, bool wait = fa
 
     if(!result)
     {
-        printf( "CreateProcess failed (%d).\n",GetLastError());
-        return;
+        printf("CreateProcess failed (%d).\n",GetLastError());
+        return 1;
     }
 
     if(wait)
@@ -37,6 +37,7 @@ static void start_process(char* command,bool show_window = false, bool wait = fa
         WaitForSingleObject(pi.hProcess, INFINITE);
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
-
     }
+
+	return 0;
 }
