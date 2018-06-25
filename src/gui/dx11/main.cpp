@@ -80,6 +80,7 @@ static bool orient_right = false;
 static bool search_highlighting = true;
 static bool is_automatic_downloading_enabled = false;
 static bool is_header_open = false;
+static bool manually_downloading = false;
 static const char* dow_items[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 static int  automatic_downloading_freq = 1;
 static int  automatic_downloading_pref_day = 1;
@@ -367,6 +368,8 @@ static void get_next_download_datetime(char* download_datetime);
 static bool time_to_download();
 static bool directory_exists(char* szPath);
 static bool file_exists(char* file);
+static bool is_leap_year(int year);
+static int   eomonth(int base_zero_month, int year_since_1900);
 static char* get_app_full_file_path(char* relative_file_path);
 static char* encrypt_password(char* password);
 static char* decrypt_password(char* encrypted_password);
@@ -528,15 +531,12 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 
 	switch (selected_style_index)
 	{
-	case 0: ImGui::StyleColorsClassic(); header_color = ImVec4(0.400f,0.200f,0.800f,1.000f); break;
-	case 1: ImGui::StyleColorsDark();    header_color = ImVec4(0.400f,0.500f,0.700f,1.000f); break;
-	case 2: ImGui::StyleColorsLight();   header_color = ImVec4(0.200f,0.400f,0.900f,1.000f); break;
-	case 3: load_style_monochrome();     header_color = ImVec4(0.070f,0.340f,0.340f,1.000f); break;
-	case 4: load_style_ecstacy();        header_color = ImVec4(1.000f,1.000f,1.000f,1.000f); break;
-	case 5: load_style_minimal();        header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
-	case 6: load_style_gruvbox();        header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
-	case 7: load_style_gruvbox_light();  header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
-	case 8: load_style_gumby();          header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
+	case 0: ImGui::StyleColorsDark();    header_color = ImVec4(0.400f,0.500f,0.700f,1.000f); break;
+	case 1: ImGui::StyleColorsLight();   header_color = ImVec4(0.200f,0.400f,0.900f,1.000f); break;
+	case 2: load_style_monochrome();     header_color = ImVec4(0.070f,0.340f,0.340f,1.000f); break;
+	case 3: load_style_ecstacy();        header_color = ImVec4(1.000f,1.000f,1.000f,1.000f); break;
+	case 4: load_style_gruvbox();        header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
+	case 5: load_style_gruvbox_light();  header_color = ImVec4(0.400f,0.400f,0.400f,1.000f); break;
 	}
 
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -572,6 +572,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
             DispatchMessage(&msg);
             continue;
         }
+
 
         if(cache_is_updated)
         {
@@ -1991,12 +1992,12 @@ static void apply_filters()
                 case FORWARDED: strncpy(filter,filter_forwarded,strlen(filter_forwarded)); strncpy(compare,emails[i].forwarded,strlen(emails[i].forwarded)); break;
                 case BODY: strncpy(filter,filter_body,strlen(filter_body)); strncpy(compare,emails[i].body,strlen(emails[i].body)); break;
                 case ALL: strncpy(filter,filter_all,strlen(filter_all)); 
-                          strncpy(compare,emails[i].body,strlen(emails[i].body));
-                          strncat(compare,emails[i].date,strlen(emails[i].date));
-                          strncat(compare,emails[i].to,strlen(emails[i].to));
-                          strncat(compare,emails[i].from,strlen(emails[i].from));
-                          strncat(compare,emails[i].subject,strlen(emails[i].subject));
-                          strncat(compare,emails[i].cc,strlen(emails[i].cc));
+                          strncpy(compare,emails[i].body,strlen(emails[i].body)); strncat(compare," ",1);
+                          strncat(compare,emails[i].date,strlen(emails[i].date)); strncat(compare," ",1);
+                          strncat(compare,emails[i].to,strlen(emails[i].to)); strncat(compare," ",1);
+                          strncat(compare,emails[i].from,strlen(emails[i].from)); strncat(compare," ",1);
+                          strncat(compare,emails[i].subject,strlen(emails[i].subject)); strncat(compare," ",1);
+                          strncat(compare,emails[i].cc,strlen(emails[i].cc)); strncat(compare," ",1);
                           strncat(compare,emails[i].forwarded,strlen(emails[i].forwarded));
                   break;
             }
@@ -2712,7 +2713,7 @@ static bool test_password(const char* pass)
     strcat(command," -t ");
     strcat(command,pass);
 
-    int result = start_process(command,false, false);
+    int result = start_process(command,false, true);
 
     return (result == 0);
 }
@@ -2804,6 +2805,35 @@ static char* get_current_datetime(struct tm &tstruct)
 	return buf;
 }
 
+static bool is_leap_year(int year)
+{
+	/* Check if the year is divisible by 4 or 
+	is divisible by 400 */
+	if ( (year % 4 == 0 && year % 100 != 0) || ( year % 400 == 0))
+		return true;
+	else
+		return false;
+}
+
+static int eomonth(int base_zero_month, int year_since_1900)
+{
+    // month: 0-11
+    switch (base_zero_month)
+    {
+        case 1:
+            if(is_leap_year(1900+year_since_1900))
+                return 29;
+            else
+                return 28;
+        case 0: case 2: case 4: case 6: case 7: case 9: case 11:
+            return 31;
+        case 3: case 5: case 8: case 10:
+            return 30;
+    }
+
+    return 30; // reasonable default
+}
+
 static void get_next_download_datetime(char* download_datetime)
 {
     struct tm current_tstruct;
@@ -2825,6 +2855,8 @@ static void get_next_download_datetime(char* download_datetime)
 
 	int num_sec_current = 0;
 	int num_sec_next = 0;
+    int wday_index = 0;
+    int pref_day = 0;
 
 	switch (automatic_downloading_freq)
 	{
@@ -2836,8 +2868,7 @@ static void get_next_download_datetime(char* download_datetime)
         num_sec_current = 60*current_tstruct.tm_min + current_tstruct.tm_sec;
         num_sec_next    = 60*next_download_tstruct.tm_min;
 
-        // check to see if current minute is greater than download minute
-        if(num_sec_current >= num_sec_next)
+        if(num_sec_current > num_sec_next)
         {
             // need to increment hour
             next_download_tstruct.tm_hour += 1;
@@ -2847,7 +2878,7 @@ static void get_next_download_datetime(char* download_datetime)
                 next_download_tstruct.tm_hour = 0;
                 next_download_tstruct.tm_mday += 1;
 
-                if(next_download_tstruct.tm_mday > 31)
+                if(next_download_tstruct.tm_mday > eomonth(next_download_tstruct.tm_mon, next_download_tstruct.tm_year))
                 {
                     next_download_tstruct.tm_mday = 1;
                     next_download_tstruct.tm_mon  += 1;
@@ -2870,13 +2901,12 @@ static void get_next_download_datetime(char* download_datetime)
         num_sec_current = 3600*current_tstruct.tm_hour       + 60*current_tstruct.tm_min + current_tstruct.tm_sec;
         num_sec_next    = 3600*next_download_tstruct.tm_hour + 60*next_download_tstruct.tm_min;
 
-        // check to see if current minute is greater than download minute
-        if(num_sec_current >= num_sec_next)
+        if(num_sec_current > num_sec_next)
         {
             // increment day
             next_download_tstruct.tm_mday += 1;
 
-            if(next_download_tstruct.tm_mday > 31)
+            if(next_download_tstruct.tm_mday > eomonth(next_download_tstruct.tm_mon, next_download_tstruct.tm_year))
             {
                 next_download_tstruct.tm_mday = 1;
                 next_download_tstruct.tm_mon  += 1;
@@ -2893,10 +2923,14 @@ static void get_next_download_datetime(char* download_datetime)
 	case 2:
         // U M T W H F S
         // 0 1 2 3 4 5 6
-        // @TODO: Not done yet...
-        
+       
+        wday_index = next_download_tstruct.tm_wday;
+
+        if(current_tstruct.tm_wday > wday_index)
+            wday_index += 6;
+
         next_download_tstruct.tm_wday = automatic_downloading_pref_dow;
-        next_download_tstruct.tm_mday += (next_download_tstruct.tm_wday - current_tstruct.tm_wday);
+        next_download_tstruct.tm_mday += (wday_index - current_tstruct.tm_wday);
         next_download_tstruct.tm_hour = automatic_downloading_pref_hour;
         next_download_tstruct.tm_min  = automatic_downloading_pref_min;
 		next_download_tstruct.tm_sec  = 0;
@@ -2904,12 +2938,11 @@ static void get_next_download_datetime(char* download_datetime)
         num_sec_current = 86400*current_tstruct.tm_mday + 3600*current_tstruct.tm_hour       + 60*current_tstruct.tm_min + current_tstruct.tm_sec;
         num_sec_next    = 86400*current_tstruct.tm_mday + 3600*next_download_tstruct.tm_hour + 60*next_download_tstruct.tm_min;
 
-        // check to see if current minute is greater than download minute
-        if(num_sec_current >= num_sec_next)
+        if(num_sec_current > num_sec_next)
         {
-            next_download_tstruct.tm_mday += 1;
+            next_download_tstruct.tm_mday += 7; // add 1 week
 
-            if(next_download_tstruct.tm_mday > 31)
+            if(next_download_tstruct.tm_mday > eomonth(next_download_tstruct.tm_mon, next_download_tstruct.tm_year))
             {
                 next_download_tstruct.tm_mday = 1;
                 next_download_tstruct.tm_mon  += 1;
@@ -2923,9 +2956,13 @@ static void get_next_download_datetime(char* download_datetime)
         }
         
         break; // every week
-	case 3: break; // every month
+	case 3: // every month
 
-        next_download_tstruct.tm_mday = automatic_downloading_pref_day;
+        pref_day = automatic_downloading_pref_day;
+        if(automatic_downloading_pref_day == 29)
+            pref_day = eomonth(next_download_tstruct.tm_mon,next_download_tstruct.tm_year);
+
+        next_download_tstruct.tm_mday = pref_day;
         next_download_tstruct.tm_hour = automatic_downloading_pref_hour;
         next_download_tstruct.tm_min  = automatic_downloading_pref_min;
 		next_download_tstruct.tm_sec  = 0;
@@ -2933,8 +2970,7 @@ static void get_next_download_datetime(char* download_datetime)
         num_sec_current = 86400*current_tstruct.tm_mday       + 3600*current_tstruct.tm_hour       + 60*current_tstruct.tm_min + current_tstruct.tm_sec;
         num_sec_next    = 86400*next_download_tstruct.tm_mday + 3600*next_download_tstruct.tm_hour + 60*next_download_tstruct.tm_min;
 
-        // check to see if current minute is greater than download minute
-        if(num_sec_current >= num_sec_next)
+        if(num_sec_current > num_sec_next)
         {
             // increment month
             next_download_tstruct.tm_mon  += 1;
@@ -3055,9 +3091,12 @@ static void download_emails_and_refresh()
         {
             if (time_to_download())
             {
-                export_emails_with_pass_background(false,true,notes_password);
-                write_direct_to_cache(root_dir);
-                get_next_download_datetime(download_datetime);
+                if(!manually_downloading)
+                {
+                    export_emails_with_pass_background(false,true,notes_password);
+                    write_direct_to_cache(root_dir);
+                    get_next_download_datetime(download_datetime);
+                }
             }
         }
         Sleep(200);
@@ -3082,7 +3121,7 @@ static void display_main_menu()
             }
 
             ImGui::Separator();
-			ImGui::DragInt("Email List Width (px)", &emails_window_width, 1);
+			ImGui::DragInt("Email List Width (px)", &emails_window_width, 1,1,1200);
 			ImGui::Checkbox("Orient Right",&orient_right);
 			if(ImGui::Checkbox("Search Highlighting",&search_highlighting))
             {
@@ -3140,7 +3179,9 @@ static void display_main_menu()
 					ImGui::RadioButton("Every Month", &automatic_downloading_freq, 3);
 					ImGui::Separator();
 
-					if (automatic_downloading_freq == 3) ImGui::SliderInt("Preferred Day", &automatic_downloading_pref_day, 1, 31);
+					if (automatic_downloading_freq == 3) {
+                        ImGui::SliderInt("Preferred Day", &automatic_downloading_pref_day, 1, 29);
+                    }
 					else if (automatic_downloading_freq == 2)
 					{
 						ImGui::ListBox("Day of Week", &automatic_downloading_pref_dow, dow_items, IM_ARRAYSIZE(dow_items), 4);
@@ -3155,7 +3196,12 @@ static void display_main_menu()
                         case 0: sprintf(pref_label, ":%02d", automatic_downloading_pref_min); break; // every hour
                         case 1: sprintf(pref_label, "%02d:%02d", automatic_downloading_pref_hour, automatic_downloading_pref_min); break; // every day
                         case 2: sprintf(pref_label, "%s %02d:%02d", dow_items[automatic_downloading_pref_dow],automatic_downloading_pref_hour, automatic_downloading_pref_min); break; // every week
-                        case 3: sprintf(pref_label, "Day %d on %02d:%02d", automatic_downloading_pref_day ,automatic_downloading_pref_hour, automatic_downloading_pref_min); break; // every month
+                        case 3: // every month
+                            if(automatic_downloading_pref_day == 29)
+                               sprintf(pref_label, "End of Month on %02d:%02d", automatic_downloading_pref_hour, automatic_downloading_pref_min);
+                            else 
+                               sprintf(pref_label, "Day %d on %02d:%02d", automatic_downloading_pref_day ,automatic_downloading_pref_hour, automatic_downloading_pref_min);
+                            break;
                     }
 					
 					ImGui::Text(pref_label);
@@ -3186,6 +3232,7 @@ static void display_main_menu()
                     }
 
                     ImGui::Text("*A password is required for automatic downloading.\nThis password will be encrypted and stored in your\nlocal user folder.");
+                    ImGui::Text("*Sometimes IBM Notes will cache the password for you.\nAnd in that case, you should be able to download\nyour emails regardless of the password you specify");
             
                     // @CLEANUP: Should only do this when a property has changed instead of every frame
                     get_next_download_datetime(download_datetime);
@@ -3193,35 +3240,42 @@ static void display_main_menu()
                
                 ImGui::EndMenu();
             }
+            
             ImGui::Separator();
 
             if (ImGui::MenuItem("Download Emails From IBM Notes..."))
             {
+                manually_downloading = true;
+
                 if(strcmp(notes_password,"") == 0)
-                    export_emails(true,false); // manually ask for password
+                    export_emails(true,true); // manually ask for password
                 else
-                    export_emails_with_pass(true,false,notes_password); // feed password in
+                    export_emails_with_pass(true,true,notes_password); // feed password in
             }
 
-			if (ImGui::Button("Refresh Emails..."))
-                ImGui::OpenPopup("Refresh Emails");
-            if (ImGui::BeginPopupModal("Refresh Emails", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-            {
-                ImGui::Text("This will reload all of your emails\nand may take some time!\n\n");
-                ImGui::Separator();
-
-                if (ImGui::Button("OK, Do it", ImVec2(120,0)))
-                {
-                    reset_and_load_emails();
-                    ImGui::CloseCurrentPopup(); 
-                }
-                ImGui::SameLine();
-                if (ImGui::Button("Cancel", ImVec2(120,0))) { ImGui::CloseCurrentPopup(); }
-                ImGui::EndPopup();
-            }
 			ImGui::EndMenu();
 
 		}
+        if(manually_downloading)
+            ImGui::OpenPopup("Writing Email Cache");
+        if (ImGui::BeginPopupModal("Writing Email Cache", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::Text("About to write the email cache. It may take awhile...\nDo you want to proceed?");
+            if (ImGui::Button("OK, Do it", ImVec2(120,0)))
+            {
+                write_direct_to_cache(root_dir);
+                ImGui::CloseCurrentPopup();
+                manually_downloading = false;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120,0)))
+            { 
+                ImGui::CloseCurrentPopup();
+                manually_downloading = false;
+            }
+            ImGui::EndPopup();
+        }
+
 		if (ImGui::BeginMenu("About"))
 		{
 			ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
@@ -3237,19 +3291,16 @@ static void display_main_menu()
 
 static bool show_style_selector(const char* label)
 {
-    if (ImGui::Combo(label, &selected_style_index, "Classic\0Dark\0Light\0Monochrome\0Ecstacy\0Minimal\0Gruvbox_Dark\0Gruvbox_Light\0Gumby"))
+    if (ImGui::Combo(label, &selected_style_index, "Dark\0Light\0Monochrome\0Ecstacy\0Gruvbox_Dark\0Gruvbox_Light"))
     {
 		switch (selected_style_index)
         {
-        case 0: ImGui::StyleColorsClassic(); header_color = ImVec4(0.4f,0.2f,0.8f,1.0f);break;
-        case 1: ImGui::StyleColorsDark();    header_color = ImVec4(0.4f,0.5f,0.7f,1.0f);break;
-        case 2: ImGui::StyleColorsLight();   header_color = ImVec4(0.2f,0.4f,0.9f,1.0f);break;
-        case 3: load_style_monochrome();     header_color = ImVec4(0.07f,0.34f,0.34f,1.0f);break;
-        case 4: load_style_ecstacy();        header_color = ImVec4(1.0f,1.0f,1.0f,1.0f);break;
-        case 5: load_style_minimal();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
-        case 6: load_style_gruvbox();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
-        case 7: load_style_gruvbox_light();  header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
-        case 8: load_style_gumby();          header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
+        case 0: ImGui::StyleColorsDark();    header_color = ImVec4(0.4f,0.5f,0.7f,1.0f);break;
+        case 1: ImGui::StyleColorsLight();   header_color = ImVec4(0.2f,0.4f,0.9f,1.0f);break;
+        case 2: load_style_monochrome();     header_color = ImVec4(0.07f,0.34f,0.34f,1.0f);break;
+        case 3: load_style_ecstacy();        header_color = ImVec4(1.0f,1.0f,1.0f,1.0f);break;
+        case 4: load_style_gruvbox();        header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
+        case 5: load_style_gruvbox_light();  header_color = ImVec4(0.4f,0.4f,0.4f,1.0f);break;
         }
         
         ImGuiStyle * style = &ImGui::GetStyle();

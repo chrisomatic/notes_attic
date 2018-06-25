@@ -35,8 +35,20 @@ static int start_process(char* command,bool show_window = false, bool wait = fal
     if(wait)
     {
         WaitForSingleObject(pi.hProcess, INFINITE);
+
+		DWORD exitCode;
+		result = GetExitCodeProcess(pi.hProcess, &exitCode);
+
+		if (!result)
+		{
+			printf("GetExitCodeProcess Failed (%d).\n", GetLastError());
+			return 2;
+		}
+
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
+
+		return exitCode;
     }
 
 	return 0;

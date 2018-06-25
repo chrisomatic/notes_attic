@@ -3845,6 +3845,15 @@ void ImGui::ClosePopup(ImGuiID id)
     ClosePopupToLevel(g.OpenPopupStack.Size - 1);
 }
 
+void ImGui::ClosePopup(const char* str_id)
+{
+    if (!IsPopupOpen(str_id))
+        return;
+
+    ImGuiContext& g = *GImGui;
+    ClosePopupToLevel(g.OpenPopupStack.Size - 1);
+}
+
 // Close the popup we have begin-ed into.
 void ImGui::CloseCurrentPopup()
 {
