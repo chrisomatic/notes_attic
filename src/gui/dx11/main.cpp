@@ -39,6 +39,16 @@ typedef enum
     ALL
 } EmailHeaderField;
 
+typedef enum
+{
+    MDS_NONE,
+    MDS_DOWNLOADING_EMAILS,
+    MDS_REFRESHING_CACHE,
+    MDS_FAILURE,
+    MDS_SUCCESS
+} ManualDownloadStage;
+ManualDownloadStage mds = MDS_NONE;
+
 #include "quicksort.h"
 
 static int* filtered_indicies;
@@ -74,6 +84,7 @@ static char hex_highlight[9];
 static bool display_timer = false;
 static char test_password_result[10] = {0};
 static int  test_password_display_timer = 0;
+static int  success_display_timer = 0;
 
 static bool only_attachments = false;
 static bool orient_right = false;
@@ -328,9 +339,9 @@ static void get_emails_direct(const char* directory_path,FILE* fp, int* temp_num
 static void write_direct_to_cache(const char* directory_path);
 static void get_emails(const char* directory_path);
 static void delete_email(int index);
-static void export_emails(bool show, bool wait);
-static void export_emails_with_pass(bool show,bool wait, const char* pass);
-static void export_emails_with_pass_background(bool show,bool wait, const char* pass);
+static bool export_emails(bool show, bool wait);
+static bool export_emails_with_pass(bool show,bool wait, const char* pass);
+static bool export_emails_with_pass_background(bool show,bool wait, const char* pass);
 static void download_emails_and_refresh();
 static void display_main_menu();
 static void apply_filters();
@@ -467,6 +478,9 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
     int num_fonts = 1;
     ImGuiIO& io = ImGui::GetIO();
 
+    // prevent ini
+	io.IniFilename = NULL;
+
 	char full_path_fonts[MAX_PATH] = { 0 };
 	strcpy(full_path_fonts, get_app_full_file_path("fonts\\"));
 
@@ -573,7 +587,6 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
             continue;
         }
 
-
         if(cache_is_updated)
         {
             cache_is_updated = false;
@@ -588,6 +601,48 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 
             apply_filters();
             apply_sorting();
+        }
+
+        if(manually_downloading)
+        {
+            if(mds == MDS_DOWNLOADING_EMAILS)
+            {
+                if(strcmp(notes_password,"") == 0)
+                    success = export_emails(true,true); // manually ask for password
+                else
+                    success = export_emails_with_pass(true,true,notes_password); // feed password in
+
+                if(success)
+                    mds = MDS_REFRESHING_CACHE;
+                else {
+                    mds = MDS_FAILURE;
+                    manually_downloading = false;
+                }
+
+            }
+            else if(mds == MDS_REFRESHING_CACHE)
+            {
+                write_direct_to_cache(root_dir);
+                mds = MDS_SUCCESS;
+                manually_downloading = false;
+                success_display_timer = 180;
+            }
+        }
+
+        // handle timed displays
+        if(mds == MDS_SUCCESS)
+        {
+            --success_display_timer;
+            if(success_display_timer <= 0)
+                mds = MDS_NONE;
+        }
+
+        if(display_timer)
+        {
+            --test_password_display_timer;
+
+            if(test_password_display_timer <= 0)
+                display_timer = false;
         }
 
 		if (IsIconic(hwnd) || !IsWindowVisible(hwnd))
@@ -2718,7 +2773,7 @@ static bool test_password(const char* pass)
     return (result == 0);
 }
 
-static void export_emails_with_pass_background(bool show, bool wait, const char* pass)
+static bool export_emails_with_pass_background(bool show, bool wait, const char* pass)
 {
     char command[260] = {0};
 
@@ -2730,9 +2785,10 @@ static void export_emails_with_pass_background(bool show, bool wait, const char*
     strcat(command," -q");
     strcat(command," -b");
 
-    start_process(command,show, wait);
+    int result = start_process(command,show, wait);
+    return (result == 0);
 }
-static void export_emails_with_pass(bool show, bool wait, const char* pass)
+static bool export_emails_with_pass(bool show, bool wait, const char* pass)
 {
     char command[260] = {0};
 
@@ -2742,10 +2798,11 @@ static void export_emails_with_pass(bool show, bool wait, const char* pass)
     strcat(command," -p ");
     strcat(command,pass);
 
-    start_process(command,show, wait);
+    int result = start_process(command,show, wait);
+    return (result == 0);
 }
 
-static void export_emails(bool show, bool wait)
+static bool export_emails(bool show, bool wait)
 {
     char command[260] = {0};
 
@@ -2753,7 +2810,8 @@ static void export_emails(bool show, bool wait)
     strcat(command," ");
     strcat(command,root_dir);
 
-    start_process(command,show,wait);
+    int result = start_process(command,show,wait);
+    return (result == 0);
 }
 
 static void get_emails(const char* directory_path)
@@ -3166,7 +3224,7 @@ static void display_main_menu()
 
             ImGui::Separator();
 
-            if (ImGui::BeginMenu("Automatic Downloading of Emails"))
+            if (ImGui::BeginMenu("Automatically Download Emails"))
             {
                 ImGui::Checkbox("Enable Downloading",&is_automatic_downloading_enabled);
 
@@ -3223,13 +3281,7 @@ static void display_main_menu()
                     }
 
                     if(display_timer)
-                    {
                         ImGui::Text(test_password_result);
-                        --test_password_display_timer;
-
-                        if(test_password_display_timer <= 0)
-                            display_timer = false;
-                    }
 
                     ImGui::Text("*A password is required for automatic downloading.\nThis password will be encrypted and stored in your\nlocal user folder.");
                     ImGui::Text("*Sometimes IBM Notes will cache the password for you.\nAnd in that case, you should be able to download\nyour emails regardless of the password you specify");
@@ -3243,19 +3295,33 @@ static void display_main_menu()
             
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Download Emails From IBM Notes..."))
+            if (ImGui::BeginMenu("Manually Download Emails"))
             {
-                manually_downloading = true;
+                if(ImGui::Button("Download", ImVec2(200,0)))
+                {
+                    manually_downloading = true;
+                    mds = MDS_DOWNLOADING_EMAILS;
+                }
+                ImGui::Separator();
 
-                if(strcmp(notes_password,"") == 0)
-                    export_emails(true,true); // manually ask for password
-                else
-                    export_emails_with_pass(true,true,notes_password); // feed password in
+                ImGui::TextColored(ImVec4(1.0f,0.0f,1.0f,1.0f),"Status: ");
+                ImGui::SameLine();
+                switch(mds)
+                {
+                    case MDS_NONE:               ImGui::Text(""); break;
+                    case MDS_DOWNLOADING_EMAILS: ImGui::Text("Downloading Emails..."); break;
+                    case MDS_REFRESHING_CACHE:   ImGui::Text("Refreshing Cache..."); break;
+                    case MDS_FAILURE:            ImGui::Text("Download Failed!"); break;
+					case MDS_SUCCESS:            ImGui::Text("Success!"); break;
+                }
+               
+                ImGui::EndMenu();
             }
 
 			ImGui::EndMenu();
 
 		}
+        /*
         if(manually_downloading)
             ImGui::OpenPopup("Writing Email Cache");
         if (ImGui::BeginPopupModal("Writing Email Cache", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -3275,7 +3341,7 @@ static void display_main_menu()
             }
             ImGui::EndPopup();
         }
-
+        */
 		if (ImGui::BeginMenu("About"))
 		{
 			ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
