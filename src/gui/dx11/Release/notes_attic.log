@@ -487,15 +487,15 @@ main.cpp(3259): warning C4996: 'sprintf': This function or variable may be unsaf
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
 main.cpp(3261): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-main.cpp(3374): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+main.cpp(3378): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
 C:\dev\git\notes_attic_tray\include\dirent.h(458): warning C4505: '_wreaddir': unreferenced local function has been removed
 C:\dev\git\notes_attic_tray\include\dirent.h(864): warning C4505: 'rewinddir': unreferenced local function has been removed
 C:\dev\git\notes_attic_tray\include\dirent.h(875): warning C4505: 'scandir': unreferenced local function has been removed
 C:\dev\git\notes_attic_tray\include\dirent.h(1021): warning C4505: 'versionsort': unreferenced local function has been removed
 main.cpp(1970): warning C4505: 'reset_and_load_emails': unreferenced local function has been removed
-main.cpp(3442): warning C4505: 'load_style_minimal': unreferenced local function has been removed
-main.cpp(3700): warning C4505: 'load_style_gumby': unreferenced local function has been removed
+main.cpp(3446): warning C4505: 'load_style_minimal': unreferenced local function has been removed
+main.cpp(3704): warning C4505: 'load_style_gumby': unreferenced local function has been removed
   Generating code
 c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(3071): warning C4172: returning address of local variable or temporary: key
 c:\dev\git\notes_attic_tray\src\gui\dx11\main.cpp(1367): warning C4172: returning address of local variable or temporary: just_dir
