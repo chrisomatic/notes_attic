@@ -3319,7 +3319,7 @@ static void display_main_menu()
             }
 
             ImGui::Separator();
-            if(ImGui::Button("Refresh Emails",ImVec2(200,0)))
+            if(ImGui::Button("Refresh Emails",ImVec2(237,0)))
                 write_direct_to_cache(root_dir);
 
 			ImGui::EndMenu();
