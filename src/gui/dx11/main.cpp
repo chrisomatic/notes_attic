@@ -27,6 +27,7 @@
 #include "process.h"
 #include "resource.h"
 
+
 typedef enum
 {
     NOTES_DATE,
@@ -66,7 +67,7 @@ static int  sort_field = 0;
 static int  sort_dir = 1;
 
 static int  selected_font_index = 0;
-static int  selected_style_index = 1;
+static int  selected_style_index = 0;
 
 static ImVec4 header_color;
 
@@ -482,7 +483,8 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	io.IniFilename = NULL;
 
 	char full_path_fonts[MAX_PATH] = { 0 };
-	strcpy(full_path_fonts, get_app_full_file_path("fonts\\"));
+    char* app_full_file_path_fonts = get_app_full_file_path("fonts\\");
+	strncpy(full_path_fonts, app_full_file_path_fonts,strlen(app_full_file_path_fonts));
 
 	if (directory_exists(full_path_fonts))
 	{
@@ -524,7 +526,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	ImGuiFreeType::BuildFontAtlas(io.Fonts, flags);
 
     // load defaults
-    strncpy(root_dir,default_root_dir,strlen(root_dir));
+    strncpy(root_dir,default_root_dir,strlen(default_root_dir));
     strncpy(xls_program_path,default_xls_path, strlen(default_xls_path));
     strncpy(doc_program_path,default_doc_path, strlen(default_doc_path));
     strncpy(csv_program_path,default_csv_path, strlen(default_csv_path));
@@ -558,11 +560,23 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 	style.FrameRounding = 3;
 
     convert_vec4_to_hexstring(style.Colors[ImGuiCol_Text],hex_forecolor);
-    strcpy(hex_highlight,"FF00FFFF");
+    strncpy(hex_highlight,"FF00FFFF",8);
 
     // try to load cache file
-    if(!load_cache())
-        write_direct_to_cache(root_dir);
+	if (!load_cache())
+	{
+		write_direct_to_cache(root_dir);
+		cache_is_updated = false;
+
+		clear_email_memory();
+		num_emails = 0;
+
+		load_cache();
+
+		filtered_indicies = (int*)malloc(num_emails * sizeof(int));
+		sorted_indicies = (int*)malloc(num_emails * sizeof(int));
+	}
+    
 
     apply_filters();
     apply_sorting();
@@ -617,6 +631,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
                 else {
                     mds = MDS_FAILURE;
                     manually_downloading = false;
+                    success_display_timer = 180;
                 }
 
             }
@@ -630,7 +645,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
         }
 
         // handle timed displays
-        if(mds == MDS_SUCCESS)
+        if(mds == MDS_SUCCESS || mds == MDS_FAILURE)
         {
             --success_display_timer;
             if(success_display_timer <= 0)
@@ -1749,8 +1764,8 @@ static void write_direct_to_cache(const char* directory_path)
     fclose(cache_fp);
 
     // rename temp cache to real cache
-    if(!MoveFileA(cache_file_path,cache_file_path_del))  return;
-    if(!MoveFileA(cache_file_path_temp,cache_file_path)) return;
+	MoveFileA(cache_file_path, cache_file_path_del);
+    MoveFileA(cache_file_path_temp,cache_file_path);
     DeleteFileA(cache_file_path_del);
 
     // set num_emails to new num_emails
@@ -3272,11 +3287,11 @@ static void display_main_menu()
                         if(test_password(notes_password)) {
                             display_timer = true;
                             test_password_display_timer = 180;
-                            strcpy(test_password_result,"It works!");
+                            strncpy(test_password_result,"It works!",12);
                         } else {
                             display_timer = true;
                             test_password_display_timer = 180;
-                            strcpy(test_password_result,"It failed :(");
+                            strncpy(test_password_result,"It failed :(",12);
                         }
                     }
 
@@ -3375,7 +3390,7 @@ static bool show_style_selector(const char* label)
         
         ImGuiStyle * style = &ImGui::GetStyle();
         convert_vec4_to_hexstring(style->Colors[ImGuiCol_Text],hex_forecolor);
-        strcpy(hex_highlight,"FF00FFFF");
+        strncpy(hex_highlight,"FF00FFFF",8);
 		prev_selected_email_index = -1;
         return true;
     }
